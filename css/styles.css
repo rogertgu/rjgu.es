@@ -9,14 +9,14 @@
     --accent-color-rgb: 245, 158, 11;
     --text-color: #e2e8f0;
     --text-color-light: #94a3b8;
-    --bg-color: #0a0e17;
-    --bg-alt-color: #0f1520;
-    --bg-elevated: #141c2b;
+    --bg-color: #060709;
+    --bg-alt-color: #0b0c0f;
+    --bg-elevated: #16181d;
     --border-color: rgba(255, 255, 255, 0.08);
-    --card-bg: rgba(20, 28, 43, 0.7);
-    --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    --card-bg: rgba(22, 24, 29, 0.7);
+    --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     --card-border: 1px solid rgba(255, 255, 255, 0.06);
-    --nav-bg: rgba(10, 14, 23, 0.85);
+    --nav-bg: rgba(8, 9, 11, 0.85);
     --success-color: #10b981;
     --error-color: #ef4444;
     --warning-color: #f59e0b;
@@ -190,6 +190,38 @@ img {
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
+}
+
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 14px;
+    font-family: var(--heading-font);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.lang-switcher .lang-link {
+    color: var(--text-color-light);
+    text-decoration: none;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: color var(--transition-speed) ease;
+}
+
+.lang-switcher .lang-link:hover {
+    color: var(--text-color);
+}
+
+.lang-switcher .lang-link.active {
+    color: var(--primary-color);
+}
+
+.lang-switcher .lang-sep {
+    color: var(--text-color-light);
+    opacity: 0.4;
 }
 
 .theme-toggle {

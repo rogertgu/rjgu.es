@@ -4,8 +4,8 @@
   "description": "Portfolio personal de un experto en redes y sistemas",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#0066ff",
+  "background_color": "#060709",
+  "theme_color": "#060709",
   "icons": [
     {
       "src": "img/icons/icon-72x72.png",

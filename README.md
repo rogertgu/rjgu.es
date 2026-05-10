@@ -2,7 +2,7 @@
 
 Este repositorio contiene el código fuente de un sitio web personal estático, diseñado para servir como un currículum interactivo y portafolio. El proyecto está optimizado para ser desplegado en Firebase Hosting y utiliza HTML, CSS y JavaScript puros, sin dependencias de frameworks.
 
-Para una comprensión más profunda de la arquitectura y el contexto del proyecto, consulta el archivo <mcfile name="project_context.md" path="c:\devel\RJGU\test\project_context.md"></mcfile>.
+Para una comprensión más profunda de la arquitectura y el contexto del proyecto, consulta el archivo [`project_context.md`](./project_context.md).
 
 ## Estructura del Proyecto
 

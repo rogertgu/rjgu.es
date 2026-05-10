@@ -4,12 +4,14 @@
  */
 
 // Nombre y versión de la caché
-const CACHE_NAME = 'portfolio-cache-v1';
+const CACHE_NAME = 'portfolio-cache-v2';
 
 // Archivos a cachear para funcionamiento offline
 const urlsToCache = [
   '/',
   '/index.html',
+  '/en/',
+  '/en/index.html',
   '/css/styles.css',
   '/js/main.js',
   '/js/network-animation.js',
@@ -21,7 +23,8 @@ const urlsToCache = [
   '/js/projects-filter.js',
   '/js/skills-animation.js',
   '/js/contact-form.js',
-  '/img/profile.svg',
+  '/js/config-loader.js',
+  '/img/profile.jpg',
   '/img/favicon.svg',
   '/img/icons/icon.svg',
   '/img/projects/project1.svg',
