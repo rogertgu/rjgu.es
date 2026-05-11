@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectItems = document.querySelectorAll('.project-item');
     const contactForm = document.getElementById('contact-form');
     const currentYearSpan = document.getElementById('current-year');
-    const cursorFollower = document.querySelector('.cursor-follower');
 
     // Inicializar el año actual en el footer
     if (currentYearSpan) {
@@ -179,36 +178,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = true;
             }
         });
-    }
-
-    // Cursor personalizado
-    if (cursorFollower) {
-        // Solo mostrar en dispositivos no táctiles
-        if (window.matchMedia("(pointer: fine)").matches) {
-            cursorFollower.style.display = 'block';
-            
-            document.addEventListener('mousemove', function(e) {
-                cursorFollower.style.left = `${e.clientX}px`;
-                cursorFollower.style.top = `${e.clientY}px`;
-            });
-            
-            // Efecto hover en enlaces y botones
-            const interactiveElements = document.querySelectorAll('a, button, .btn, .social-link, .project-item, .cert-item');
-            
-            interactiveElements.forEach(element => {
-                element.addEventListener('mouseenter', function() {
-                    cursorFollower.style.width = '50px';
-                    cursorFollower.style.height = '50px';
-                    cursorFollower.style.background = 'rgba(var(--primary-color-rgb), 0.1)';
-                });
-                
-                element.addEventListener('mouseleave', function() {
-                    cursorFollower.style.width = '30px';
-                    cursorFollower.style.height = '30px';
-                    cursorFollower.style.background = 'rgba(var(--primary-color-rgb), 0.2)';
-                });
-            });
-        }
     }
 
     // Añadir clase de animación a todos los elementos que deben animarse
