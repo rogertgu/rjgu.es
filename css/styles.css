@@ -837,6 +837,67 @@ img {
     border: var(--card-border);
 }
 
+/* Cutrepodcast: últimos episodios con reproductor */
+.content-item.podcast-card .content-icon img {
+    border-radius: 16px;
+}
+
+.podcast-episodes {
+    list-style: none;
+    margin: 4px 0 16px;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+    text-align: left;
+}
+
+.podcast-episode {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(var(--primary-color-rgb), 0.06);
+}
+
+.podcast-episode img {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    flex: 0 0 auto;
+    object-fit: cover;
+}
+
+.podcast-episode-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.content-item .content-info p.podcast-episode-title {
+    margin: 0 0 2px;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1.3;
+}
+
+.content-item .content-info p.podcast-episode-meta {
+    margin: 0 0 6px;
+    font-size: 0.8rem;
+}
+
+.podcast-episode audio {
+    width: 100%;
+    height: 36px;
+}
+
+.podcast-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
 /* ===== EXPERIENCIA ===== */
 .timeline {
     position: relative;
