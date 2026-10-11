@@ -12,6 +12,7 @@ Web personal/portfolio de Rogert Guevara (Network & Systems Administrator) en ht
 - `service-worker.js` + `manifest.json` (PWA); los iconos están en `img/icons/`.
 - `scripts/validate.mjs`: validación estática (JSON, `<main>`/`<h1>`, referencias locales, iconos del manifest cacheados en el SW, sintaxis JS).
 - `firebase.json`: restos de un despliegue antiguo en Firebase; no se usa.
+- `lofi/`: **no editar aquí.** Lo genera y sube directamente a `main` el repo `rogertgu/homelab-live` (`tools/deploy-rjgu.sh`). Por eso `origin/main` puede tener commits nuevos: hacer `git fetch` e integrar antes de publicar.
 
 ## Cómo ejecutar / probar / desplegar
 ```bash
