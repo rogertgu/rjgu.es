@@ -23,7 +23,7 @@ scripts/build-cv.sh                # regenera los PDF del CV en la raíz
 scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 ```
-- Despliegue: GitHub Actions (`.github/workflows/deploy.yml`) publica en GitHub Pages en cada push a `main` (las PR solo validan). `CNAME` = `rjgu.es`, con Cloudflare como proxy delante.
+- Despliegue: GitHub Actions (`.github/workflows/deploy.yml`) publica en GitHub Pages en cada push a `main` (las PR solo validan). `CNAME` = `rjgu.es`. DNS en Cloudflare **sin proxy** (nube gris) desde 2026-10-11: `rjgu.es` A/AAAA → IPs de GitHub Pages y `www` CNAME → `rogertgu.github.io`; HTTPS con el certificado de GitHub (Let's Encrypt).
 - **Hacer push a `main` publica la web en producción.**
 - En local `/cutrepodcast/` muestra el mensaje de error (con enlaces a iVoox/RSS): el CORS del bucket R2 solo admite el origen `rjgu.es`. Para probar con datos, descargar el JSON y servirlo con `page.route` de Playwright.
 
@@ -32,7 +32,8 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - Publicado en rjgu.es el rediseño B ("ingeniería/terminal"): portada con topología + línea de estado, Sobre mí, Proyectos (FROGLM, Cutrepodcast, Homelab con agentes Hermes/OpenClaw), Experiencia agrupada por empresa, Stack (sin porcentajes; `is-core` = especialidad principal) + certificaciones, Contacto.
 - CV nuevo publicado: `Rogert-Guevara-CV.pdf` (ES, enlazado desde `/`) y `Rogert-Guevara-CV-EN.pdf` (EN, enlazado desde `/en/`), generados desde `cv/`.
 - Publicadas la página `/cutrepodcast/` (ES/EN, todos los episodios) y la tarjeta "Rogert's Homelab Live" (→ `/lofi/`). SW en `portfolio-cache-v8`.
-- Desde TARS-11/WSL a veces no hay conexión con la IP de Cloudflare que devuelve el DNS (188.114.96.5); para verificar producción con curl: `--resolve rjgu.es:443:104.21.0.1`.
+- Proxy de Cloudflare quitado (2026-10-11) porque los bloqueos de LaLiga cortan las IPs compartidas de Cloudflare en las operadoras españolas durante los partidos. `cutrepodcast.rjgu.es` (R2) sigue con proxy y sigue afectado. Marcha atrás: volver a poner los 9 registros (4 A, 4 AAAA de `rjgu.es` y el CNAME `www`) en «Proxied».
+- Certificado de GitHub Pages: el anterior caduca el 2026-10-13 y la renovación estaba en `bad_authz` (con el proxy, GitHub no podía validar). Se quitó y volvió a poner el dominio para reiniciarla; comprobar con `gh api repos/rogertgu/rjgu.es/pages --jq .https_certificate` y, cuando esté emitido, volver a activar `https_enforced` (`gh api -X PUT repos/rogertgu/rjgu.es/pages -f cname=rjgu.es -F https_enforced=true`).
 
 ## Próximos pasos
 1. CV: añadir formación e idiomas cuando Rogert los dé (no inventarlos) y, si los aporta, logros concretos por puesto en OmniAccess. Tras editar `cv/*.html`: `scripts/build-cv.sh`.
@@ -58,3 +59,4 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - 2026-10-11 — Claude Code — Página `/cutrepodcast/` (ES/EN) con todos los episodios; tarjeta de la portada reducida a enlaces. Homelab: agentes de terceros aislados de la LAN (confirmado por Rogert).
 - 2026-10-11 — Claude Code — Tarjeta "Rogert's Homelab Live" (enlace a `/lofi/`, ES/EN) a petición de la sesión de homelab-live.
 - 2026-10-11 — Claude Code — Publicadas la página del Cutrepodcast y la tarjeta de Homelab Live; producción verificada (200 en todas las rutas, SW v8, CORS del JSON OK, 23 episodios).
+- 2026-10-11 — Claude Code — Quitado el proxy de Cloudflare de `rjgu.es` y `www` (bloqueos de LaLiga); reiniciada la emisión del certificado de GitHub Pages.
