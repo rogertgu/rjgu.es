@@ -629,6 +629,16 @@ section[id] {
     font-weight: 600;
 }
 
+.about-text a {
+    color: var(--accent);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.4);
+    transition: border-color var(--ease);
+}
+
+.about-text a:hover {
+    border-bottom-color: var(--accent);
+}
+
 .about-text .btn-row {
     margin-top: 28px;
 }
