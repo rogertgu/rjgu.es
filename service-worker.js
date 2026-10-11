@@ -24,6 +24,7 @@ const urlsToCache = [
   assetUrl('img/profile.jpg'),
   assetUrl('img/froglm.svg'),
   assetUrl('img/cutrepodcast.jpg'),
+  assetUrl('img/lofi.jpg'),
   assetUrl('img/favicon.svg'),
   assetUrl('img/icons/icon-72x72.png'),
   assetUrl('img/icons/icon-96x96.png'),

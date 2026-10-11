@@ -716,6 +716,44 @@ section[id] {
     margin-bottom: 0;
 }
 
+.project-media {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 32px;
+    align-items: center;
+}
+
+.project-shot img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    transition: border-color var(--ease);
+}
+
+.project-shot:hover img {
+    border-color: var(--accent);
+}
+
+.project-media .project-desc {
+    margin-bottom: 14px;
+}
+
+.project-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 22px;
+}
+
+.project-facts li {
+    padding: 2px 8px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
 .spec {
     font-family: var(--mono);
     font-size: 0.82rem;

@@ -14,7 +14,7 @@ Web personal/portfolio de Rogert Guevara (Network & Systems Administrator) en ht
 - `cv/`: CV en HTML (`es.html`, `en.html`, `cv.css`), A4 de una página, mismo estilo que la web en claro. Los PDF se generan con `scripts/build-cv.sh` (Chrome headless) → `Rogert-Guevara-CV.pdf` (ES) y `Rogert-Guevara-CV-EN.pdf` (EN). Usa `fonts/inter-latin-wght.woff2` (Inter, OFL) solo para el CV.
 - `scripts/validate.mjs`: validación estática (JSON, `<main>`/`<h1>`, referencias locales, iconos del manifest cacheados en el SW, sintaxis JS).
 - `firebase.json`: restos de un despliegue antiguo en Firebase; no se usa.
-- `lofi/`: **no editar aquí.** Lo genera y sube directamente a `main` el repo `rogertgu/homelab-live` (`tools/deploy-rjgu.sh`). Por eso `origin/main` puede tener commits nuevos: hacer `git fetch` e integrar antes de publicar.
+- `lofi/`: **generado, no editar aquí** (ver `lofi/README.md`). Es la versión pública de Rogert's Homelab Live; la genera y sube directamente a `main` el repo `rogertgu/homelab-live` (`~/projects/homelab-live`, `tools/deploy-rjgu.sh`). La portada lo enlaza desde la tarjeta `#homelab-live`; su captura es `img/lofi.jpg` (sacada de `https://rjgu.es/lofi/?nointro=1&seed=1&hour=20.5&still=1` y recortada al canvas; para rehacerla sin ayuda ni controles usar además `shot=1`: `https://rjgu.es/lofi/?shot=1&nointro=1&seed=1&hour=20.5&still=1`). Por eso `origin/main` puede tener commits nuevos: hacer `git fetch` e integrar antes de publicar.
 
 ## Cómo ejecutar / probar / desplegar
 ```bash
@@ -54,3 +54,4 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - 2026-10-11 — Claude Code — Homelab con agentes de IA; párrafo de Sobre mí recortado; CV rehecho en HTML→PDF (`cv/`, `scripts/build-cv.sh`), una página ES/EN, pendiente de aprobación.
 - 2026-10-11 — Claude Code — Publicado el rediseño B y el CV nuevo (ES/EN) en rjgu.es.
 - 2026-10-11 — Claude Code — Página `/cutrepodcast/` (ES/EN) con todos los episodios; tarjeta de la portada reducida a enlaces. Homelab: agentes de terceros aislados de la LAN (confirmado por Rogert).
+- 2026-10-11 — Claude Code — Tarjeta "Rogert's Homelab Live" (enlace a `/lofi/`, ES/EN) a petición de la sesión de homelab-live.
