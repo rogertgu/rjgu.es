@@ -24,12 +24,12 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 ## Estado actual
 (Actualizado 2026-10-11)
 - En producción: la portada, Sobre mí, Contenidos (FROGLM + Cutrepodcast), Experiencia, Habilidades, Tecnologías y Contacto.
+- Experiencia rediseñada (una columna, puestos agrupados por empresa); commit local pendiente de aprobación para hacer push.
 - En curso: rediseño por pasos (ver *Próximos pasos*).
 
 ## Próximos pasos
-1. Experiencia: pasar la línea de tiempo alterna a una sola columna y agrupar los tres puestos de OmniAccess.
-2. Unir Habilidades y Tecnologías en una sección "Stack" sin barras de porcentaje (niveles de texto + certificaciones).
-3. Detalles: hueco junto a la foto en Sobre mí, Contacto repite datos de Sobre mí, `<title>` sin nombre.
+1. Unir Habilidades y Tecnologías en una sección "Stack" sin barras de porcentaje (niveles de texto + certificaciones).
+2. Detalles: hueco junto a la foto en Sobre mí, Contacto repite datos de Sobre mí, `<title>` sin nombre.
 
 ## Decisiones y restricciones
 - Sitio estático sin framework ni paso de build; mantenerlo así salvo que se pida otra cosa.
@@ -40,3 +40,4 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 ## Registro
 - 2026-10-10 — Claude Code — Recuperada la tarjeta del Cutrepodcast (ES/EN) con los últimos 3 episodios.
 - 2026-10-11 — Claude Code — Commit de la limpieza pendiente (accesibilidad, SEO, JS sin uso eliminado, `validate.mjs`, iconos PWA) y creación de este AGENTS.md. Revisión de diseño y plan de rediseño.
+- 2026-10-11 — Claude Code — Experiencia: línea de tiempo en una columna, agrupada por empresa (la sección pasa de 2.343 a 1.516 px de alto en escritorio).
