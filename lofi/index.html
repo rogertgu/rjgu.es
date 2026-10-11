@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-build="044a64d60b8e">
+<html lang="es" data-build="6c9c775b9e91">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1724,8 +1724,14 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   });
   function startAudio() {
     if (AC3) return;
+    try {
+      if (navigator.audioSession) navigator.audioSession.type = "playback";
+    } catch (e) {
+    }
     AC3 = initSynth();
     started = true;
+    if (AC3.state !== "running") AC3.resume().catch(() => {
+    });
     const lp = AC3.createBiquadFilter(), comp = AC3.createDynamicsCompressor();
     lp.type = "lowpass";
     lp.frequency.value = 5e3;
@@ -1768,6 +1774,14 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     playTrack(cur, false, infSeed);
     setInterval(schedule2, 100);
     schedule2();
+  }
+  function unlockAudio() {
+    if (!AC3) {
+      startAudio();
+      return;
+    }
+    if (playing && AC3.state !== "running") AC3.resume().catch(() => {
+    });
   }
   function routeOutput(node) {
     node.connect(AC3.destination);
@@ -6239,7 +6253,7 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   on("radio", updateUI);
   on("pomodoro", updateUI);
   on("settings", updateUI);
-  playerEl.addEventListener("pointerdown", (e) => e.stopPropagation());
+  ["pointerdown", "pointerup", "touchend"].forEach((ev) => playerEl.addEventListener(ev, (e) => e.stopPropagation()));
   $2("play").addEventListener("click", togglePlay);
   $2("next").addEventListener("click", nextTrack);
   $2("prev").addEventListener("click", prevTrack);
@@ -6373,10 +6387,8 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   (KIOSK2 ? ["pointerdown", "touchstart", "keydown"] : ["mousemove", "pointerdown", "touchstart", "keydown"]).forEach((ev) => addEventListener(ev, pokeUI, { passive: true }));
   if (KIOSK2) hideUI();
   else pokeUI();
-  var start3 = () => {
-    if (!started) startAudio();
-  };
-  addEventListener("pointerdown", start3);
+  var start3 = unlockAudio;
+  ["pointerdown", "pointerup", "touchend"].forEach((ev) => addEventListener(ev, start3, { passive: true }));
   var hintDone = KIOSK2;
   if (KIOSK2) hint.style.opacity = 0;
   on("radio", () => {
