@@ -28,16 +28,14 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 
 ## Estado actual
 (Actualizado 2026-10-11)
-- En producción (rjgu.es): todavía el diseño antiguo (último deploy: commit `9fd6a28`).
-- `main` local va 2 commits por delante de origin sin push (limpieza técnica + Experiencia en una columna).
-- Rama `redesign-b`: rediseño completo en estilo "ingeniería/terminal". Secciones: portada con topología + línea de estado, Sobre mí, Proyectos (FROGLM, Cutrepodcast, Homelab), Experiencia, Stack (sin porcentajes; `is-core` = especialidad principal, sacado de las habilidades ≥90 % del diseño antiguo) + certificaciones, Contacto. Pendiente de revisión por Rogert.
+- Publicado en rjgu.es el rediseño B ("ingeniería/terminal"): portada con topología + línea de estado, Sobre mí, Proyectos (FROGLM, Cutrepodcast, Homelab con agentes Hermes/OpenClaw), Experiencia agrupada por empresa, Stack (sin porcentajes; `is-core` = especialidad principal) + certificaciones, Contacto.
+- CV nuevo publicado: `Rogert-Guevara-CV.pdf` (ES, enlazado desde `/`) y `Rogert-Guevara-CV-EN.pdf` (EN, enlazado desde `/en/`), generados desde `cv/`.
 
 ## Próximos pasos
-1. Rogert revisa `redesign-b` en local; ajustes que pida.
-2. Si se aprueba: merge de `redesign-b` en `main` y push (publica en rjgu.es). Comprobar después en producción que el Cutrepodcast carga episodios (CORS solo para `rjgu.es`).
-3. CV nuevo (`cv/`): pendiente de aprobación. Al aprobarlo: `scripts/build-cv.sh`, enlazar el PDF EN desde `en/index.html` (hero y contacto) y añadirlo al precache de `service-worker.js`. Faltan formación e idiomas (Rogert no los ha dado; no inventarlos). Email del CV: rogert@rjgu.es, sin teléfono (decisión de Rogert).
-4. Homelab: los agentes (Hermes/OpenClaw) están en la VLAN 24 según la doc del homelab; no afirmar "aislados de la red" salvo que Rogert lo confirme.
-5. Opcional: `img/projects/` parece sin uso; revisar y borrar.
+1. CV: añadir formación e idiomas cuando Rogert los dé (no inventarlos) y, si los aporta, logros concretos por puesto en OmniAccess. Tras editar `cv/*.html`: `scripts/build-cv.sh`.
+2. Homelab: los agentes (Hermes/OpenClaw) están en la VLAN 24 según la doc del homelab; no afirmar "aislados de la red" salvo que Rogert lo confirme.
+3. Opcional: renombrar `vm-01`/`vm-02` de la topología a `hermes`/`openclaw`.
+4. Opcional: `img/projects/` parece sin uso; revisar y borrar.
 
 ## Decisiones y restricciones
 - Sitio estático sin framework ni paso de build; mantenerlo así salvo que se pida otra cosa.
@@ -53,3 +51,4 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - 2026-10-11 — Claude Code — Experiencia: línea de tiempo en una columna, agrupada por empresa (la sección pasa de 2.343 a 1.516 px de alto en escritorio).
 - 2026-10-11 — Claude Code — Rediseño B ("ingeniería/terminal") en la rama `redesign-b`: CSS y JS reescritos, nueva estructura, fuente alojada en la web, eliminados config.yml/config-loader y 4 JS antiguos. Página en escritorio de ~8.300 a 4.724 px; en móvil de 10.162 a 6.904 px.
 - 2026-10-11 — Claude Code — Homelab con agentes de IA; párrafo de Sobre mí recortado; CV rehecho en HTML→PDF (`cv/`, `scripts/build-cv.sh`), una página ES/EN, pendiente de aprobación.
+- 2026-10-11 — Claude Code — Publicado el rediseño B y el CV nuevo (ES/EN) en rjgu.es.

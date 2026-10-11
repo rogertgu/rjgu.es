@@ -4,7 +4,7 @@
  */
 
 // Nombre y versión de la caché
-const CACHE_NAME = 'portfolio-cache-v6';
+const CACHE_NAME = 'portfolio-cache-v7';
 const APP_ROOT = new URL('./', self.location).pathname;
 const assetUrl = path => `${APP_ROOT}${path.replace(/^\/+/, '')}`;
 
@@ -32,6 +32,7 @@ const urlsToCache = [
   assetUrl('img/icons/icon-384x384.png'),
   assetUrl('img/icons/icon-512x512.png'),
   assetUrl('Rogert-Guevara-CV.pdf'),
+  assetUrl('Rogert-Guevara-CV-EN.pdf'),
   assetUrl('manifest.json')
 ];
 
