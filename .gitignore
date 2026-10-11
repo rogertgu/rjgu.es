@@ -54,3 +54,5 @@ Desktop.ini
 *.njsproj
 *.sln
 *.sw?
+# Capturas de Playwright MCP
+.playwright-mcp/

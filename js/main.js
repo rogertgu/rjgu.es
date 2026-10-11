@@ -7,10 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinksContainer = document.querySelector('.nav-links');
     const sections = document.querySelectorAll('section[id]');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const projectItems = document.querySelectorAll('.project-item');
-    const contactForm = document.getElementById('contact-form');
     const currentYearSpan = document.getElementById('current-year');
+    const isEnglish = document.documentElement.lang === 'en';
+    const menuLabels = isEnglish
+        ? { open: 'Open menu', close: 'Close menu' }
+        : { open: 'Abrir menú', close: 'Cerrar menú' };
 
     // Inicializar el año actual en el footer
     if (currentYearSpan) {
@@ -19,21 +20,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // (Tema inicial y cambio gestionados por theme-switcher.js)
 
-    // Menú móvil toggle
-    menuToggle.addEventListener('click', function() {
-        this.classList.toggle('active');
-        navLinksContainer.classList.toggle('active');
-        body.classList.toggle('no-scroll');
-    });
+    // Menú móvil accesible
+    if (menuToggle && navLinksContainer) {
+        const setMenuState = (isOpen) => {
+            menuToggle.classList.toggle('active', isOpen);
+            navLinksContainer.classList.toggle('active', isOpen);
+            body.classList.toggle('no-scroll', isOpen);
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+            menuToggle.setAttribute('aria-label', isOpen ? menuLabels.close : menuLabels.open);
+        };
 
-    // Cerrar menú móvil al hacer clic en un enlace
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            menuToggle.classList.remove('active');
-            navLinksContainer.classList.remove('active');
-            body.classList.remove('no-scroll');
+        menuToggle.addEventListener('click', () => {
+            setMenuState(!menuToggle.classList.contains('active'));
         });
-    });
+
+        navLinks.forEach(link => link.addEventListener('click', () => setMenuState(false)));
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                setMenuState(false);
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                setMenuState(false);
+            }
+        });
+    }
 
     // (Navegación de desplazamiento suave gestionada por scroll-animations.js)
 
@@ -49,8 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 navLinks.forEach(link => {
                     link.classList.remove('active');
+                    link.removeAttribute('aria-current');
                     if (link.getAttribute('href') === `#${sectionId}`) {
                         link.classList.add('active');
+                        link.setAttribute('aria-current', 'location');
                     }
                 });
             }
@@ -69,86 +85,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // (Animación de barras de habilidades gestionada por skills-animation.js)
 
-    // Añadir clase de animación a elementos cuando son visibles
-    function animateOnScroll() {
-        const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
-        
-        elementsToAnimate.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            
-            if (elementTop < windowHeight * 0.9) {
-                element.classList.add('fade-in');
-            }
-        });
-    }
-
-    // Filtrar proyectos
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Remover clase activa de todos los botones
-            filterBtns.forEach(btn => btn.classList.remove('active'));
-            // Añadir clase activa al botón clickeado
-            this.classList.add('active');
-            
-            const filterValue = this.getAttribute('data-filter');
-            
-            projectItems.forEach(item => {
-                if (filterValue === 'all') {
-                    item.style.display = 'block';
-                } else {
-                    const categories = item.getAttribute('data-category').split(' ');
-                    if (categories.includes(filterValue)) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                }
-            });
-        });
-    });
-
-    // Manejar envío del formulario de contacto
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            // Permitimos el envío nativo (no llamamos preventDefault)
-            const submitBtn = this.querySelector('.submit-btn');
-            if (submitBtn) {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-                submitBtn.disabled = true;
-            }
-        });
-    }
-
-    // Añadir clase de animación a todos los elementos que deben animarse
-    function setupAnimations() {
-        const elementsToAnimate = [
-            ...document.querySelectorAll('.about-content > *'),
-            ...document.querySelectorAll('.timeline-item'),
-            ...document.querySelectorAll('.skills-category'),
-            ...document.querySelectorAll('.cert-item'),
-            ...document.querySelectorAll('.project-item'),
-            ...document.querySelectorAll('.contact-item'),
-            document.querySelector('.contact-form')
-        ].filter(el => el !== null);
-        
-        elementsToAnimate.forEach(element => {
-            element.classList.add('animate-on-scroll');
-        });
-    }
-
-    // Inicializar animaciones
-    setupAnimations();
-
     // Event listeners para scroll
     window.addEventListener('scroll', function() {
         setActiveNavLink();
         toggleNavbarStyle();
-        animateOnScroll();
     });
 
     // Disparar funciones al cargar la página
     setActiveNavLink();
     toggleNavbarStyle();
-    animateOnScroll();
 });

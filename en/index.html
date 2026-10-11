@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Professional portfolio of a networking and systems expert, showcasing projects, skills and experience in network architecture, security and automation.">
-    <meta name="keywords" content="networking, systems, architecture, security, cloud, automation, portfolio, expert">
     <meta name="author" content="RJGU">
     <meta name="theme-color" content="#060709">
     <title>Portfolio | Network & Systems Administrator</title>
+    <link rel="canonical" href="https://rjgu.es/en/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Rogert Guevara | Network & Systems Administrator">
+    <meta property="og:description" content="Professional portfolio focused on networking, systems, architecture, security and automation.">
+    <meta property="og:url" content="https://rjgu.es/en/">
+    <meta property="og:image" content="https://rjgu.es/img/profile.jpg">
+    <meta name="twitter:card" content="summary">
 
     <!-- Idiomas alternativos -->
     <link rel="alternate" hreflang="es" href="https://rjgu.es/">
@@ -15,14 +22,14 @@
     <link rel="alternate" hreflang="x-default" href="https://rjgu.es/">
 
     <!-- Favicon -->
-    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/img/icons/icon-192x192.png">
+    <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../img/icons/icon-192x192.png">
 
     <!-- Manifest for PWA -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="../manifest.json">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
@@ -30,12 +37,12 @@
 </head>
 <body>
     <!-- Main navigation -->
-    <nav class="main-nav">
+    <nav class="main-nav" aria-label="Main navigation">
         <div class="logo">
             <span>RJGU</span>
         </div>
-        <div class="nav-links">
-            <a href="#inicio" class="nav-link active">Home</a>
+        <div id="site-navigation" class="nav-links">
+            <a href="#inicio" class="nav-link active" aria-current="location">Home</a>
             <a href="#sobre-mi" class="nav-link">About</a>
             <a href="#contenidos" class="nav-link">Content</a>
             <a href="#experiencia" class="nav-link">Experience</a>
@@ -43,23 +50,24 @@
             <a href="#tecnologias" class="nav-link">Technologies</a>
             <a href="#contacto" class="nav-link">Contact</a>
         </div>
-        <div class="lang-switcher" aria-label="Language">
-            <a href="/" class="lang-link" hreflang="es">ES</a>
+        <nav class="lang-switcher" aria-label="Language">
+            <a href="../" class="lang-link" hreflang="es">ES</a>
             <span class="lang-sep">/</span>
-            <a href="/en/" class="lang-link active" hreflang="en">EN</a>
-        </div>
-        <div class="theme-toggle">
-            <i class="fas fa-moon"></i>
-        </div>
-        <div class="menu-toggle">
-            <div class="hamburger"></div>
-        </div>
+            <a href="./" class="lang-link active" hreflang="en" aria-current="page">EN</a>
+        </nav>
+        <button type="button" class="theme-toggle" aria-label="Switch to light theme" aria-pressed="true" title="Switch to light theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="menu-toggle" aria-controls="site-navigation" aria-expanded="false" aria-label="Open menu">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
     </nav>
 
+    <main id="main-content">
     <!-- Hero section with background animation -->
     <section id="inicio" class="hero-section">
         <div class="network-animation">
-            <canvas id="network-canvas"></canvas>
+            <canvas id="network-canvas" aria-hidden="true"></canvas>
         </div>
         <div class="hero-content">
             <h1 class="glitch" data-text="Rogert Guevara Uzcátegui">Rogert Guevara Uzcátegui</h1>
@@ -108,7 +116,7 @@
             <div class="about-content">
                 <div class="about-image">
                     <div class="image-container">
-                        <img src="/img/profile.jpg" alt="Profile picture" class="profile-image">
+                        <img src="../img/profile.jpg" alt="Profile picture" class="profile-image" width="800" height="800" loading="lazy" decoding="async">
 
                     </div>
                 </div>
@@ -142,7 +150,7 @@
                             <i class="fab fa-github"></i>
                         </a>
                     </div>
-                    <a href="/Rogert-Guevara-CV.pdf" class="btn btn-outline download-cv" download>
+                    <a href="../Rogert-Guevara-CV.pdf" class="btn btn-outline download-cv" download>
                         <i class="fas fa-download"></i> Download CV
                     </a>
                 </div>
@@ -160,7 +168,7 @@
             <div class="content-links">
                 <div class="content-item featured-card">
                     <div class="content-icon">
-                        <img src="/img/froglm.svg" alt="FROGLM logo">
+                        <img src="../img/froglm.svg" alt="FROGLM logo" width="1077" height="974" loading="lazy" decoding="async">
                     </div>
                     <div class="content-info">
                         <h3>FROGLM</h3>
@@ -545,6 +553,7 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -579,13 +588,13 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="/js/main.js"></script>
-    <script src="/js/network-animation.js"></script>
-    <script src="/js/scroll-animations.js"></script>
-    <script src="/js/theme-switcher.js"></script>
-    <script src="/js/skills-animation.js"></script>
-    <script src="/js/config-loader.js" defer></script>
-    <script src="/js/cutrepodcast.js" defer></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/network-animation.js"></script>
+    <script src="../js/scroll-animations.js"></script>
+    <script src="../js/theme-switcher.js"></script>
+    <script src="../js/skills-animation.js"></script>
+    <script src="../js/config-loader.js" defer></script>
+    <script src="../js/cutrepodcast.js" defer></script>
 
     <!-- Preserve hash when switching language -->
     <script>
@@ -603,7 +612,10 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
+                const serviceWorkerPath = document.documentElement.lang === 'en'
+                    ? '../service-worker.js'
+                    : 'service-worker.js';
+                navigator.serviceWorker.register(new URL(serviceWorkerPath, document.baseURI).pathname)
                     .then(registration => {
                         console.log('Service Worker registered:', registration.scope);
                     })
@@ -612,6 +624,21 @@
                     });
             });
         }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rogert Guevara Uzcátegui",
+        "jobTitle": "Network & Systems Administrator",
+        "url": "https://rjgu.es/en/",
+        "image": "https://rjgu.es/img/profile.jpg",
+        "sameAs": [
+            "https://www.linkedin.com/in/rogert-guevara-uzcategui",
+            "https://github.com/rogertgu"
+        ]
+    }
     </script>
 </body>
 </html>

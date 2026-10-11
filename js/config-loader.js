@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const basePath = window.location.pathname.includes('/en/') ? '../' : './';
+    const configBaseUrl = new URL(basePath, document.baseURI);
     fetch(basePath + 'config.yml')
         .then(response => {
             if (!response.ok) {
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (config.profile_picture_url) {
                 const profileImage = document.querySelector('.about-image img');
                 if (profileImage) {
-                    profileImage.src = config.profile_picture_url;
+                    profileImage.src = new URL(config.profile_picture_url, configBaseUrl).href;
                 }
             }
         })

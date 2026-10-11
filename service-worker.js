@@ -4,31 +4,39 @@
  */
 
 // Nombre y versión de la caché
-const CACHE_NAME = 'portfolio-cache-v4';
+const CACHE_NAME = 'portfolio-cache-v5';
+const APP_ROOT = new URL('./', self.location).pathname;
+const assetUrl = path => `${APP_ROOT}${path.replace(/^\/+/, '')}`;
 
 // Archivos a cachear para funcionamiento offline
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/en/',
-  '/en/index.html',
-  '/css/styles.css',
-  '/js/main.js',
-  '/js/network-animation.js',
-  '/js/scroll-animations.js',
-  '/js/theme-switcher.js',
-  '/js/skills-animation.js',
-  '/js/config-loader.js',
-  '/js/cutrepodcast.js',
-  '/img/profile.jpg',
-  '/img/favicon.svg',
-  '/img/cutrepodcast.jpg',
-  '/img/icons/icon.svg',
-  '/img/projects/project1.svg',
-  '/img/projects/project2.svg',
-  '/img/projects/project3.svg',
-  '/img/projects/project4.svg',
-  '/manifest.json'
+  assetUrl(''),
+  assetUrl('index.html'),
+  assetUrl('en/'),
+  assetUrl('en/index.html'),
+  assetUrl('css/styles.css'),
+  assetUrl('js/main.js'),
+  assetUrl('js/network-animation.js'),
+  assetUrl('js/scroll-animations.js'),
+  assetUrl('js/theme-switcher.js'),
+  assetUrl('js/skills-animation.js'),
+  assetUrl('js/config-loader.js'),
+  assetUrl('js/cutrepodcast.js'),
+  assetUrl('img/profile.jpg'),
+  assetUrl('img/froglm.svg'),
+  assetUrl('img/cutrepodcast.jpg'),
+  assetUrl('img/favicon.svg'),
+  assetUrl('img/icons/icon-72x72.png'),
+  assetUrl('img/icons/icon-96x96.png'),
+  assetUrl('img/icons/icon-128x128.png'),
+  assetUrl('img/icons/icon-144x144.png'),
+  assetUrl('img/icons/icon-152x152.png'),
+  assetUrl('img/icons/icon-192x192.png'),
+  assetUrl('img/icons/icon-384x384.png'),
+  assetUrl('img/icons/icon-512x512.png'),
+  assetUrl('Rogert-Guevara-CV.pdf'),
+  assetUrl('manifest.json'),
+  assetUrl('config.yml')
 ];
 
 // Instalación del service worker
@@ -64,6 +72,13 @@ self.addEventListener('activate', event => {
 
 // Estrategia de caché: Network first, fallback to cache
 self.addEventListener('fetch', event => {
+  const requestUrl = new URL(event.request.url);
+
+  // Solo cachear peticiones GET del mismo origen.
+  if (event.request.method !== 'GET' || requestUrl.origin !== self.location.origin) {
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then(response => {
@@ -76,48 +91,26 @@ self.addEventListener('fetch', event => {
         const responseToCache = response.clone();
         
         // Guardar en caché
-        caches.open(CACHE_NAME)
-          .then(cache => {
-            cache.put(event.request, responseToCache);
-          });
+        event.waitUntil(
+          caches.open(CACHE_NAME)
+            .then(cache => cache.put(event.request, responseToCache))
+        );
           
         return response;
       })
       .catch(() => {
         // Si falla la red, intentar desde caché
-        return caches.match(event.request);
+        return caches.match(event.request).then(cachedResponse => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+
+          if (event.request.mode === 'navigate') {
+            return caches.match(assetUrl('index.html'));
+          }
+
+          return Response.error();
+        });
       })
-  );
-});
-
-// Evento de sincronización en segundo plano (para formularios)
-self.addEventListener('sync', event => {
-  if (event.tag === 'contact-form-sync') {
-    event.waitUntil(
-      // Aquí iría la lógica para enviar datos del formulario
-      // almacenados en IndexedDB cuando se recupere la conexión
-      console.log('Sincronizando formulario de contacto')
-    );
-  }
-});
-
-// Evento de notificación push
-self.addEventListener('push', event => {
-  const title = 'Portfolio Notification';
-  const options = {
-    body: event.data.text() || 'Notificación del portfolio',
-    icon: '/img/icons/icon-192x192.png',
-    badge: '/img/icons/icon-72x72.png'
-  };
-  
-  event.waitUntil(self.registration.showNotification(title, options));
-});
-
-// Evento de clic en notificación
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  
-  event.waitUntil(
-    clients.openWindow('/')
   );
 });

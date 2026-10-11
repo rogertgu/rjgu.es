@@ -2,6 +2,12 @@
 
 ## Configuración Local
 
+Antes de publicar, ejecuta la validación estática:
+```bash
+npm install
+npm run validate
+```
+
 ### Opción 1: Servidor Python (Recomendado)
 ```bash
 python -m http.server 8000
@@ -30,6 +36,7 @@ npm start
    - Navega a Settings > Pages
    - En "Source", selecciona "GitHub Actions"
    - El workflow ya está configurado en `.github/workflows/deploy.yml`
+   - Las pull requests solo ejecutan la validación; el despliegue ocurre al hacer push a `main`.
 
 3. **Activar GitHub Pages:**
    - El despliegue se ejecutará automáticamente con cada push a la rama `main`

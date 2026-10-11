@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('network-canvas');
     if (!canvas) return;
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
     const ctx = canvas.getContext('2d');
     let width, height;
 
@@ -115,7 +119,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Modificar la función animate para incluir la interacción con el ratón
+    let animationFrameId = null;
+
     function animate() {
+        if (document.hidden) {
+            animationFrameId = null;
+            return;
+        }
+
         // Limpiar el canvas
         ctx.clearRect(0, 0, width, height);
 
@@ -144,8 +155,14 @@ document.addEventListener('DOMContentLoaded', function() {
         drawConnections();
 
         // Solicitar el siguiente frame
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
     }
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && animationFrameId === null) {
+            animate();
+        }
+    });
 
     // Iniciar la animación
     animate();

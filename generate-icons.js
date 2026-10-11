@@ -2,13 +2,13 @@
  * generate-icons.js
  * Script para generar los iconos de la PWA en diferentes tamaños a partir del SVG base
  * 
- * Para ejecutar este script, necesitas tener instalado Node.js y las siguientes dependencias:
- * npm install sharp svgexport
+ * Para ejecutar este script, necesitas tener instalado Node.js y sharp:
+ * npm install
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const sharp = require('sharp');
 
 // Configuración
 const SVG_SOURCE = path.join(__dirname, 'img/icons/icon.svg');
@@ -32,24 +32,23 @@ async function generateIcons() {
       return;
     }
     
-    // Generar cada tamaño de icono
-    for (const size of ICON_SIZES) {
+    // Generar cada tamaño directamente con sharp
+    await Promise.all(ICON_SIZES.map(async size => {
       const outputFile = path.join(OUTPUT_DIR, `icon-${size}x${size}.png`);
-      
-      // Comando para convertir SVG a PNG usando svgexport
-      const command = `npx svgexport "${SVG_SOURCE}" "${outputFile}" ${size}:${size}`;
-      
+
       console.log(`Generando icono de ${size}x${size} píxeles...`);
-      execSync(command);
+      await sharp(SVG_SOURCE)
+        .resize(size, size)
+        .png()
+        .toFile(outputFile);
       console.log(`✓ Icono generado: ${outputFile}`);
-    }
+    }));
     
     console.log('\n¡Todos los iconos han sido generados con éxito!');
     console.log('\nPara usar estos iconos, asegúrate de que las rutas en manifest.json son correctas.');
   } catch (error) {
     console.error('Error al generar los iconos:', error.message);
-    console.log('\nPara ejecutar este script, necesitas instalar las dependencias:');
-    console.log('npm install sharp svgexport');
+    process.exitCode = 1;
   }
 }
 

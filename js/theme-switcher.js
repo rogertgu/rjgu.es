@@ -106,9 +106,15 @@ class ThemeSwitcher {
     }
     
     if (button) {
+      const isEnglish = document.documentElement.lang === 'en';
+      const label = this.currentTheme === 'dark'
+        ? (isEnglish ? 'Switch to light theme' : 'Cambiar a tema claro')
+        : (isEnglish ? 'Switch to dark theme' : 'Cambiar a tema oscuro');
+
       // Actualizar atributos y clases según el tema actual
       button.setAttribute('aria-pressed', this.currentTheme === 'dark');
-      button.setAttribute('title', `Cambiar a tema ${this.currentTheme === 'dark' ? 'claro' : 'oscuro'}`);
+      button.setAttribute('aria-label', label);
+      button.setAttribute('title', label);
       
       // Si el botón tiene un icono, actualizarlo
       const iconElement = button.querySelector('i, svg, img');
@@ -224,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Crear instancia global
   window.themeSwitcher = new ThemeSwitcher({
     toggleSelector: '.theme-toggle',
-    defaultTheme: 'dark'
+    defaultTheme: 'dark',
+    respectSystemPreference: false
   });
 });

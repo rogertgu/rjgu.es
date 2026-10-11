@@ -4,9 +4,4 @@
 linkedin_url: "https://www.linkedin.com/in/rogert-guevara-uzcategui"
 
 # Profile picture URL
-profile_picture_url: "/img/profile.jpg"
-
-# Personal information
-name: "Rogert Guevara Uzcátegui"
-title: "Network & Systems Administrator"
-location: "Palma, Balearic Islands, Spain"
+profile_picture_url: "img/profile.jpg"

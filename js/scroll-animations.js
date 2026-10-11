@@ -13,6 +13,7 @@ class ScrollAnimations {
       smoothScroll: true,  // Habilitar desplazamiento suave
       offset: 100          // Offset para el desplazamiento suave
     };
+    this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
     // Clases de animación disponibles
     this.animationClasses = [
@@ -130,6 +131,15 @@ class ScrollAnimations {
       [data-delay="800"] { transition-delay: 0.8s; }
       [data-delay="900"] { transition-delay: 0.9s; }
       [data-delay="1000"] { transition-delay: 1s; }
+
+      @media (prefers-reduced-motion: reduce) {
+        [data-animate] {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+          will-change: auto;
+        }
+      }
     `;
     
     // Añadir estilos al documento
@@ -190,7 +200,7 @@ class ScrollAnimations {
           // Desplazamiento suave
           window.scrollTo({
             top: offsetTop,
-            behavior: 'smooth'
+            behavior: this.prefersReducedMotion ? 'auto' : 'smooth'
           });
           
           // Actualizar la URL sin recargar la página
@@ -214,7 +224,7 @@ class ScrollAnimations {
           // Desplazamiento suave
           window.scrollTo({
             top: offsetTop,
-            behavior: 'smooth'
+            behavior: this.prefersReducedMotion ? 'auto' : 'smooth'
           });
         }
       }, 100);

@@ -11,7 +11,7 @@ This repo is also intended as a **template** — fork it, swap the content, and 
 - Single-page, vanilla HTML + CSS + JS — no framework, no build step
 - Two languages out of the box (`/` Spanish, `/en/` English) with `hreflang` + `sitemap.xml` alternates for SEO
 - Dark theme by default with a light-mode toggle
-- Hero with network/particles animation, glitch + typing text effects, glassmorphism cards, animated skill bars
+- Hero with network animation, CSS glitch effect, glassmorphism cards and animated skill bars
 - PWA: installable, service-worker cache for offline use
 - Mobile-first, responsive nav with hamburger
 - Deploys via GitHub Pages on every push to `main` (workflow included)
@@ -64,7 +64,7 @@ sed -i 's|Rogert Guevara Uzcátegui|Your Name|g' index.html en/index.html
 
 ### 2. Profile photo
 
-Replace `img/profile.jpg` with your own (square, ~800×800px works well). The path is referenced from `config.yml` (`profile_picture_url`) — `js/config-loader.js` reads it and sets the `<img src>` at runtime. If you change the filename, update `config.yml` accordingly. **Keep the leading `/`** in the path so it works from both `/` and `/en/`.
+Replace `img/profile.jpg` with your own (square, ~800×800px works well). The path is referenced from `config.yml` (`profile_picture_url`) — `js/config-loader.js` reads it and sets the `<img src>` at runtime. If you change the filename, update `config.yml` accordingly. Use a path relative to the site root so it also works when deployed under a repository subpath.
 
 ### 3. Section content
 
@@ -72,7 +72,7 @@ Edit directly in `index.html` (Spanish) and `en/index.html` (English). The main 
 
 - **Hero stats** — search for `hero-stats` and edit the three `hero-stat` blocks (years, vendors, certs)
 - **About text** — the two `<p>` paragraphs in `#sobre-mi`
-- **Content section** (`#contenidos`) — currently embeds an iVoox podcast; replace or delete the `<div class="content-item">`
+- **Content section** (`#contenidos`) — currently contains a featured FROGLM card; replace or delete the `<div class="content-item">`
 - **Experience** (`#experiencia`) — five `timeline-item` blocks. Add/remove as needed
 - **Skills** (`#habilidades`) — three `skills-category` groups with `data-value` percentages (0–100), plus `certifications` block
 - **Tech stack** (`#tecnologias`) — four `tech-category` blocks with `tech-tag` chips
@@ -113,14 +113,14 @@ If you only want one language:
 
 ### 6. PWA icons
 
-The repo doesn't ship the PNG icons referenced in `manifest.json` (`img/icons/icon-192x192.png`, etc.) — only `icon.svg` is included. To generate the full set:
+The generated PNG icons referenced by `manifest.json` are included in `img/icons/`. If you replace `img/icons/icon.svg`, regenerate the full set with:
 
 ```bash
-npm install            # installs sharp + svgexport
-node generate-icons.js
+npm install            # installs the local development tools
+npm run generate-icons
 ```
 
-This produces all the sizes the manifest expects from an SVG source.
+This produces all the sizes the manifest and Service Worker expect from the SVG source.
 
 ### 7. Custom domain
 
@@ -131,7 +131,7 @@ The `CNAME` file currently contains `rjgu.es`. **You must change or delete it** 
 
 ### 8. Contact / email forms
 
-There's no contact form by default — the site uses `mailto:` links. `js/contact-form.js` is present but unused by the current HTML; you can wire it up to [FormSubmit](https://formsubmit.co), [Formspree](https://formspree.io) or similar if you want a form instead.
+There's no contact form by default — the site uses `mailto:` links. If you later need a form, connect it to a provider such as [FormSubmit](https://formsubmit.co) or [Formspree](https://formspree.io) and add the required client-side validation.
 
 ---
 
@@ -167,17 +167,15 @@ firebase deploy --only hosting
 │   └── styles.css          # All styles, CSS variables at top
 ├── js/
 │   ├── main.js             # Initializes modules + scroll/menu behavior
-│   ├── network-animation.js, particles.js, glitch-text.js, typing-effect.js
-│   ├── scroll-animations.js, theme-switcher.js, skills-animation.js
-│   ├── projects-filter.js  # (unused unless you add a projects grid)
-│   ├── contact-form.js     # (unused unless you wire up a form)
+│   ├── network-animation.js, scroll-animations.js
+│   ├── theme-switcher.js, skills-animation.js
 │   └── config-loader.js    # Reads config.yml → updates LinkedIn URL + photo src
 ├── img/
 │   ├── profile.jpg         # Your face here
 │   ├── favicon.svg
 │   ├── icons/icon.svg      # Source for generate-icons.js
 │   └── projects/           # Sample project SVGs
-├── config.yml              # Lightweight runtime config (LinkedIn, photo, name, etc.)
+├── config.yml              # Lightweight runtime config (LinkedIn and photo)
 ├── manifest.json           # PWA manifest
 ├── service-worker.js       # Offline cache
 ├── sitemap.xml             # SEO with hreflang alternates
@@ -185,7 +183,8 @@ firebase deploy --only hosting
 ├── CNAME                   # GitHub Pages custom domain
 ├── firebase.json           # Firebase Hosting config
 ├── generate-icons.js       # Generates PWA icon sizes from icon.svg
-├── package.json            # Dev-only deps: serve, sharp, svgexport
+├── package.json            # Dev-only deps: serve, sharp, firebase-tools
+├── scripts/validate.mjs    # Validación estática sin dependencias externas
 ├── DEPLOY.md               # Hosting + DNS guide
 └── .github/workflows/deploy.yml  # GitHub Pages deploy workflow
 ```
@@ -196,7 +195,7 @@ firebase deploy --only hosting
 
 A few things to double-check before pushing your fork to GitHub:
 
-- **`config.yml` is served publicly** at `<your-site>/config.yml`. Don't put anything in it you wouldn't put on the homepage. The current schema only needs `linkedin_url`, `profile_picture_url`, `name`, `title`, `location`.
+- **`config.yml` is served publicly** at `<your-site>/config.yml`. Don't put anything in it you wouldn't put on the homepage. The current schema only uses `linkedin_url` and `profile_picture_url`.
 - **Your commit author email** is exposed in git history. If you don't want your real email on a public repo, set:
   ```bash
   git config user.email "<your-id>+<your-username>@users.noreply.github.com"
@@ -204,6 +203,7 @@ A few things to double-check before pushing your fork to GitHub:
   GitHub's settings page shows the exact noreply address for your account.
 - **Don't commit `.env` files, Firebase service account JSONs, or any credentials.** The `.gitignore` covers the common cases but always sanity-check with `git status` before committing.
 - The service worker (`service-worker.js`) precaches a fixed list of paths. If you rename files or add new top-level assets, update both `urlsToCache` and bump `CACHE_NAME` so existing visitors get the new version.
+- GitHub Actions runs `npm run validate` on pushes and pull requests. Only pushes to `main` deploy to GitHub Pages.
 
 ---
 

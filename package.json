@@ -5,6 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "serve -s .",
+    "validate": "node scripts/validate.mjs",
     "generate-icons": "node generate-icons.js",
     "deploy": "firebase deploy"
   },
@@ -22,7 +23,6 @@
   "devDependencies": {
     "firebase-tools": "^12.0.0",
     "serve": "^14.0.0",
-    "sharp": "^0.32.0",
-    "svgexport": "^0.4.2"
+    "sharp": "^0.32.0"
   }
 }

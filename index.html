@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio profesional de un experto en redes y sistemas, mostrando proyectos, habilidades y experiencia en arquitectura de redes, seguridad y automatización.">
-    <meta name="keywords" content="redes, sistemas, arquitectura, seguridad, cloud, automatización, portfolio, experto">
     <meta name="author" content="RJGU">
     <meta name="theme-color" content="#060709">
     <title>Portfolio | Network & Systems Administrator</title>
+    <link rel="canonical" href="https://rjgu.es/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:title" content="Rogert Guevara | Network & Systems Administrator">
+    <meta property="og:description" content="Portfolio profesional de un experto en redes y sistemas, arquitectura, seguridad y automatización.">
+    <meta property="og:url" content="https://rjgu.es/">
+    <meta property="og:image" content="https://rjgu.es/img/profile.jpg">
+    <meta name="twitter:card" content="summary">
 
     <!-- Idiomas alternativos -->
     <link rel="alternate" hreflang="es" href="https://rjgu.es/">
@@ -30,12 +37,12 @@
 </head>
 <body>
     <!-- Navegación principal -->
-    <nav class="main-nav">
+    <nav class="main-nav" aria-label="Navegación principal">
         <div class="logo">
             <span>RJGU</span>
         </div>
-        <div class="nav-links">
-            <a href="#inicio" class="nav-link active">Inicio</a>
+        <div id="site-navigation" class="nav-links">
+            <a href="#inicio" class="nav-link active" aria-current="location">Inicio</a>
             <a href="#sobre-mi" class="nav-link">Sobre Mí</a>
             <a href="#contenidos" class="nav-link">Contenidos</a>
             <a href="#experiencia" class="nav-link">Experiencia</a>
@@ -43,23 +50,24 @@
             <a href="#tecnologias" class="nav-link">Tecnologías</a>
             <a href="#contacto" class="nav-link">Contacto</a>
         </div>
-        <div class="lang-switcher" aria-label="Language">
-            <a href="/" class="lang-link active" hreflang="es">ES</a>
+        <nav class="lang-switcher" aria-label="Idioma">
+            <a href="./" class="lang-link active" hreflang="es" aria-current="page">ES</a>
             <span class="lang-sep">/</span>
-            <a href="/en/" class="lang-link" hreflang="en">EN</a>
-        </div>
-        <div class="theme-toggle">
-            <i class="fas fa-moon"></i>
-        </div>
-        <div class="menu-toggle">
-            <div class="hamburger"></div>
-        </div>
+            <a href="en/" class="lang-link" hreflang="en">EN</a>
+        </nav>
+        <button type="button" class="theme-toggle" aria-label="Cambiar a tema claro" aria-pressed="true" title="Cambiar a tema claro">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="menu-toggle" aria-controls="site-navigation" aria-expanded="false" aria-label="Abrir menú">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
     </nav>
 
+    <main id="main-content">
     <!-- Sección de inicio con animación de fondo -->
     <section id="inicio" class="hero-section">
         <div class="network-animation">
-            <canvas id="network-canvas"></canvas>
+            <canvas id="network-canvas" aria-hidden="true"></canvas>
         </div>
         <div class="hero-content">
             <h1 class="glitch" data-text="Rogert Guevara Uzcátegui">Rogert Guevara Uzcátegui</h1>
@@ -108,7 +116,7 @@
             <div class="about-content">
                 <div class="about-image">
                     <div class="image-container">
-                        <img src="img/profile.jpg" alt="Foto de perfil" class="profile-image">
+                        <img src="img/profile.jpg" alt="Foto de perfil" class="profile-image" width="800" height="800" loading="lazy" decoding="async">
 
                     </div>
                 </div>
@@ -142,7 +150,7 @@
                             <i class="fab fa-github"></i>
                         </a>
                     </div>
-                    <a href="/Rogert-Guevara-CV.pdf" class="btn btn-outline download-cv" download>
+                        <a href="Rogert-Guevara-CV.pdf" class="btn btn-outline download-cv" download>
                         <i class="fas fa-download"></i> Descargar CV
                     </a>
                 </div>
@@ -160,7 +168,7 @@
             <div class="content-links">
                 <div class="content-item featured-card">
                     <div class="content-icon">
-                        <img src="/img/froglm.svg" alt="FROGLM logo">
+                        <img src="img/froglm.svg" alt="FROGLM logo" width="1077" height="974" loading="lazy" decoding="async">
                     </div>
                     <div class="content-info">
                         <h3>FROGLM</h3>
@@ -545,6 +553,7 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -603,7 +612,10 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
+                const serviceWorkerPath = document.documentElement.lang === 'en'
+                    ? '../service-worker.js'
+                    : 'service-worker.js';
+                navigator.serviceWorker.register(new URL(serviceWorkerPath, document.baseURI).pathname)
                     .then(registration => {
                         console.log('Service Worker registrado con éxito:', registration.scope);
                     })
@@ -612,6 +624,21 @@
                     });
             });
         }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rogert Guevara Uzcátegui",
+        "jobTitle": "Network & Systems Administrator",
+        "url": "https://rjgu.es/",
+        "image": "https://rjgu.es/img/profile.jpg",
+        "sameAs": [
+            "https://www.linkedin.com/in/rogert-guevara-uzcategui",
+            "https://github.com/rogertgu"
+        ]
+    }
     </script>
 </body>
 </html>
