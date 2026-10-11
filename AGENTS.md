@@ -31,6 +31,8 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 (Actualizado 2026-10-11)
 - Publicado en rjgu.es el rediseño B ("ingeniería/terminal"): portada con topología + línea de estado, Sobre mí, Proyectos (FROGLM, Cutrepodcast, Homelab con agentes Hermes/OpenClaw), Experiencia agrupada por empresa, Stack (sin porcentajes; `is-core` = especialidad principal) + certificaciones, Contacto.
 - CV nuevo publicado: `Rogert-Guevara-CV.pdf` (ES, enlazado desde `/`) y `Rogert-Guevara-CV-EN.pdf` (EN, enlazado desde `/en/`), generados desde `cv/`.
+- Publicadas la página `/cutrepodcast/` (ES/EN, todos los episodios) y la tarjeta "Rogert's Homelab Live" (→ `/lofi/`). SW en `portfolio-cache-v8`.
+- Desde TARS-11/WSL a veces no hay conexión con la IP de Cloudflare que devuelve el DNS (188.114.96.5); para verificar producción con curl: `--resolve rjgu.es:443:104.21.0.1`.
 
 ## Próximos pasos
 1. CV: añadir formación e idiomas cuando Rogert los dé (no inventarlos) y, si los aporta, logros concretos por puesto en OmniAccess. Tras editar `cv/*.html`: `scripts/build-cv.sh`.
@@ -55,3 +57,4 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - 2026-10-11 — Claude Code — Publicado el rediseño B y el CV nuevo (ES/EN) en rjgu.es.
 - 2026-10-11 — Claude Code — Página `/cutrepodcast/` (ES/EN) con todos los episodios; tarjeta de la portada reducida a enlaces. Homelab: agentes de terceros aislados de la LAN (confirmado por Rogert).
 - 2026-10-11 — Claude Code — Tarjeta "Rogert's Homelab Live" (enlace a `/lofi/`, ES/EN) a petición de la sesión de homelab-live.
+- 2026-10-11 — Claude Code — Publicadas la página del Cutrepodcast y la tarjeta de Homelab Live; producción verificada (200 en todas las rutas, SW v8, CORS del JSON OK, 23 episodios).
