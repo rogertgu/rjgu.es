@@ -1,0 +1,288 @@
+/* CV en A4 (ES/EN). Mismo lenguaje visual que la web, en claro para imprimir.
+   Los PDF se generan con scripts/build-cv.sh. */
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-weight: 100 800;
+    src: url('../fonts/jetbrains-mono-latin-wght.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 100 900;
+    src: url('../fonts/inter-latin-wght.woff2') format('woff2');
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+:root {
+    --text: #0f1419;
+    --muted: #4f5964;
+    --faint: #8a939d;
+    --accent: #0f766e;
+    --border: #dde2e8;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', system-ui, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background: #e9ecef;
+}
+
+body {
+    font-family: var(--sans);
+    font-size: 8.6pt;
+    line-height: 1.42;
+    color: var(--text);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+.page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    padding: 13mm 16mm 10mm;
+    background: #fff;
+    overflow: hidden;
+}
+
+@media screen {
+    .page {
+        margin: 24px auto;
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* ----- Cabecera ----- */
+.cv-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8mm;
+    align-items: end;
+    padding-bottom: 5mm;
+    border-bottom: 1.5px solid var(--text);
+}
+
+.cv-header h1 {
+    font-family: var(--mono);
+    font-size: 21pt;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.cv-role {
+    margin-top: 2mm;
+    font-family: var(--mono);
+    font-size: 9pt;
+    color: var(--accent);
+}
+
+.cv-contact {
+    font-family: var(--mono);
+    font-size: 7.8pt;
+    line-height: 1.6;
+    text-align: right;
+    color: var(--muted);
+}
+
+.cv-contact a:hover {
+    color: var(--accent);
+}
+
+/* ----- Secciones ----- */
+.cv-section {
+    margin-top: 5mm;
+}
+
+.cv-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 2.5mm;
+    margin-bottom: 3mm;
+    font-family: var(--mono);
+    font-size: 9.5pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.cv-section h2 span {
+    font-size: 7.5pt;
+    font-weight: 500;
+    color: var(--accent);
+}
+
+.cv-section h2::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.summary {
+    color: var(--muted);
+    font-size: 8.8pt;
+}
+
+.summary strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* ----- Experiencia ----- */
+.job + .job {
+    margin-top: 3.5mm;
+}
+
+.job-head,
+.role-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4mm;
+}
+
+.job-head h3 {
+    font-family: var(--mono);
+    font-size: 9.5pt;
+    font-weight: 700;
+}
+
+.job-head .where {
+    font-weight: 400;
+    color: var(--faint);
+}
+
+.dates {
+    flex: none;
+    font-family: var(--mono);
+    font-size: 7.6pt;
+    color: var(--faint);
+}
+
+.role {
+    margin-top: 2mm;
+    padding-left: 3.5mm;
+    border-left: 1.5px solid var(--border);
+}
+
+.role:first-of-type {
+    border-left-color: var(--accent);
+}
+
+.role-head h4 {
+    font-size: 9pt;
+    font-weight: 600;
+}
+
+.role-head .dates {
+    color: var(--accent);
+}
+
+.role p,
+.role li {
+    color: var(--muted);
+}
+
+.role ul {
+    margin-top: 0.5mm;
+    padding-left: 3.5mm;
+    list-style: '–  ';
+}
+
+.role li::marker {
+    color: var(--faint);
+}
+
+.role li + li {
+    margin-top: 0.6mm;
+}
+
+/* ----- Filas clave/valor: stack, certificaciones, proyectos ----- */
+.stack-row {
+    display: grid;
+    grid-template-columns: 30mm 1fr;
+    gap: 3mm;
+    padding: 1.2mm 0;
+    border-bottom: 1px dashed var(--border);
+}
+
+.stack-row:last-child {
+    border-bottom: 0;
+}
+
+.stack-row dt {
+    font-family: var(--mono);
+    font-size: 7.6pt;
+    color: var(--faint);
+    padding-top: 0.3mm;
+}
+
+.stack-row dd {
+    font-family: var(--mono);
+    font-size: 7.8pt;
+}
+
+.stack-row b {
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.legend {
+    margin-top: 1.5mm;
+    font-family: var(--mono);
+    font-size: 7pt;
+    color: var(--faint);
+}
+
+.legend b {
+    color: var(--accent);
+}
+
+.stack-row dd.prose {
+    font-family: var(--sans);
+    font-size: 8.4pt;
+    color: var(--muted);
+}
+
+.stack-row dd.prose strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.stack-row dt a,
+.url {
+    color: var(--accent);
+}
+
+/* ----- Pie ----- */
+.cv-footer {
+    margin-top: 4mm;
+    padding-top: 2mm;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 7pt;
+    color: var(--faint);
+}
