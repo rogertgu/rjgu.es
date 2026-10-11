@@ -4,7 +4,7 @@
  */
 
 // Nombre y versión de la caché
-const CACHE_NAME = 'portfolio-cache-v5';
+const CACHE_NAME = 'portfolio-cache-v6';
 const APP_ROOT = new URL('./', self.location).pathname;
 const assetUrl = path => `${APP_ROOT}${path.replace(/^\/+/, '')}`;
 
@@ -15,12 +15,9 @@ const urlsToCache = [
   assetUrl('en/'),
   assetUrl('en/index.html'),
   assetUrl('css/styles.css'),
+  assetUrl('fonts/jetbrains-mono-latin-wght.woff2'),
   assetUrl('js/main.js'),
-  assetUrl('js/network-animation.js'),
-  assetUrl('js/scroll-animations.js'),
-  assetUrl('js/theme-switcher.js'),
-  assetUrl('js/skills-animation.js'),
-  assetUrl('js/config-loader.js'),
+  assetUrl('js/topology.js'),
   assetUrl('js/cutrepodcast.js'),
   assetUrl('img/profile.jpg'),
   assetUrl('img/froglm.svg'),
@@ -35,8 +32,7 @@ const urlsToCache = [
   assetUrl('img/icons/icon-384x384.png'),
   assetUrl('img/icons/icon-512x512.png'),
   assetUrl('Rogert-Guevara-CV.pdf'),
-  assetUrl('manifest.json'),
-  assetUrl('config.yml')
+  assetUrl('manifest.json')
 ];
 
 // Instalación del service worker

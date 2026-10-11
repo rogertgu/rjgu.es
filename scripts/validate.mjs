@@ -51,13 +51,9 @@ for (const icon of manifest.icons || []) {
 }
 
 const jsFiles = [
-  'js/config-loader.js',
   'js/cutrepodcast.js',
   'js/main.js',
-  'js/network-animation.js',
-  'js/scroll-animations.js',
-  'js/skills-animation.js',
-  'js/theme-switcher.js',
+  'js/topology.js',
   'service-worker.js'
 ];
 

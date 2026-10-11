@@ -1,13 +1,13 @@
 {
-  "name": "Portfolio - Network and Systems Expert",
-  "short_name": "Tech Portfolio",
-  "description": "Portfolio personal de un experto en redes y sistemas",
+  "name": "Rogert Guevara · Network & Systems Administrator",
+  "short_name": "RJGU",
+  "description": "Web personal de Rogert Guevara, administrador de redes y sistemas",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#060709",
-  "theme_color": "#060709",
+  "background_color": "#0b0d10",
+  "theme_color": "#0b0d10",
   "icons": [
     {
       "src": "img/icons/icon-72x72.png",

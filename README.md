@@ -11,7 +11,9 @@ This repo is also intended as a **template** — fork it, swap the content, and 
 - Single-page, vanilla HTML + CSS + JS — no framework, no build step
 - Two languages out of the box (`/` Spanish, `/en/` English) with `hreflang` + `sitemap.xml` alternates for SEO
 - Dark theme by default with a light-mode toggle
-- Hero with network animation, CSS glitch effect, glassmorphism cards and animated skill bars
+- "Engineering / terminal" look: one accent colour, self-hosted JetBrains Mono for headings, system font for body text
+- Hero with an animated SVG network topology (generic, not a real network); static with `prefers-reduced-motion`
+- No external requests for fonts or icons (inline SVG + CSS masks)
 - PWA: installable, service-worker cache for offline use
 - Mobile-first, responsive nav with hamburger
 - Deploys via GitHub Pages on every push to `main` (workflow included)
@@ -44,14 +46,14 @@ Run these replacements across `index.html` and `en/index.html` (both languages):
 
 | Find | Replace with | Notes |
 |---|---|---|
-| `Rogert Guevara Uzcátegui` | Your full name | Hero `<h1>`, about section, glitch `data-text` |
-| `RJGU` | Your initials / brand | Nav logo, footer logo, `<meta name="author">`, copyright |
-| `rogert@rjgu.es` | Your contact email | 5 occurrences per file (hero CTA, about, contact section, footer) |
-| `Network & Systems Administrator` | Your role / title | Hero subtitle, about heading, footer tagline |
-| `Palma, Islas Baleares, España` | Your location (ES) | About + contact |
-| `Palma, Balearic Islands, Spain` | Your location (EN) | About + contact |
-| `https://www.linkedin.com/in/rogert-guevara-uzcategui` | Your LinkedIn URL | Hero + footer in both files, also `config.yml` |
-| `https://github.com/rogertgu` | Your GitHub URL | Hero + footer in both files |
+| `Rogert Guevara Uzcátegui` | Your full name | Hero `<h1>`, `<meta name="author">`, JSON-LD |
+| `RJGU` | Your initials / brand | Nav logo, footer copyright |
+| `rogert@rjgu.es` | Your contact email | Hero CTA and contact section |
+| `Network & Systems Administrator` | Your role / title | `<title>`, hero kicker, footer, JSON-LD |
+| `Palma, Islas Baleares` | Your location (ES) | Hero status line |
+| `Palma, Balearic Islands` | Your location (EN) | Hero status line |
+| `https://www.linkedin.com/in/rogert-guevara-uzcategui` | Your LinkedIn URL | Hero buttons + contact section, JSON-LD |
+| `https://github.com/rogertgu` | Your GitHub URL | Hero buttons + contact section, JSON-LD |
 | `https://rjgu.es/` | Your domain | `<link rel="alternate" hreflang>` in `<head>` of both files + `sitemap.xml` |
 
 A one-shot pass with `sed` (Linux/macOS, adjust strings):
@@ -64,19 +66,19 @@ sed -i 's|Rogert Guevara Uzcátegui|Your Name|g' index.html en/index.html
 
 ### 2. Profile photo
 
-Replace `img/profile.jpg` with your own (square, ~800×800px works well). The path is referenced from `config.yml` (`profile_picture_url`) — `js/config-loader.js` reads it and sets the `<img src>` at runtime. If you change the filename, update `config.yml` accordingly. Use a path relative to the site root so it also works when deployed under a repository subpath.
+Replace `img/profile.jpg` with your own (square, ~800×800px works well). It is shown in greyscale by CSS. If you change the filename, update the `<img>` in both HTML files, `og:image`, the JSON-LD block and `service-worker.js`.
 
 ### 3. Section content
 
 Edit directly in `index.html` (Spanish) and `en/index.html` (English). The main sections you'll want to update:
 
-- **Hero stats** — search for `hero-stats` and edit the three `hero-stat` blocks (years, vendors, certs)
-- **About text** — the two `<p>` paragraphs in `#sobre-mi`
-- **Content section** (`#contenidos`) — currently contains a featured FROGLM card; replace or delete the `<div class="content-item">`
-- **Experience** (`#experiencia`) — five `timeline-item` blocks. Add/remove as needed
-- **Skills** (`#habilidades`) — three `skills-category` groups with `data-value` percentages (0–100), plus `certifications` block
-- **Tech stack** (`#tecnologias`) — four `tech-category` blocks with `tech-tag` chips
-- **Contact** (`#contacto`) — email, location, availability
+- **Hero** (`#inicio`) — kicker, tagline, buttons and the `statusline` key/value list (experience, current role, location, availability)
+- **Topology diagram** — nodes and links are defined at the top of `js/topology.js`
+- **About** (`#sobre-mi`) — photo and the two `<p>` paragraphs
+- **Projects** (`#proyectos`) — one `<article class="project">` per project; `project-wide` spans the full row
+- **Experience** (`#experiencia`) — one `timeline-item` per company with its `timeline-role` entries
+- **Stack** (`#stack`) — one `stack-row` per group; add `is-core` to a `chip` to highlight it as a core specialty. Certifications follow
+- **Contact** (`#contacto`) — email and links
 
 ### 4. Colors / theme
 
@@ -84,22 +86,22 @@ All colors are CSS variables at the top of `css/styles.css`:
 
 ```css
 :root {
-    --primary-color: #00d4aa;      /* accent green */
-    --secondary-color: #7c3aed;    /* violet */
-    --accent-color: #f59e0b;       /* amber */
-    --bg-color: #060709;           /* near-black background */
-    --bg-alt-color: #0b0c0f;       /* alternating section bg */
-    --bg-elevated: #16181d;        /* cards / elevated surfaces */
-    --card-bg: rgba(22,24,29,0.7); /* glassmorphism */
-    --nav-bg: rgba(8,9,11,0.85);
+    --bg: #0b0d10;          /* background */
+    --bg-alt: #0e1114;      /* alternating section bg */
+    --surface: #12161b;     /* cards */
+    --border: #222830;
+    --text: #e6e9ed;
+    --muted: #949ea9;       /* secondary text */
+    --accent: #00d4aa;      /* the only accent colour */
+    --accent-rgb: 0, 212, 170;
     /* ... */
 }
 ```
 
-A light-mode block follows (`:root[data-theme="light"]`). Tweak both for full theming.
+A light-mode block follows (`[data-theme="light"]`). Tweak both for full theming.
 
 Also update the corresponding meta tags so PWA install / browser chrome match:
-- `<meta name="theme-color" content="#060709">` in both `<head>`
+- `<meta name="theme-color" content="#0b0d10">` in both `<head>` (updated at runtime when the theme changes)
 - `theme_color` and `background_color` in `manifest.json`
 
 ### 5. Single language?
@@ -107,9 +109,9 @@ Also update the corresponding meta tags so PWA install / browser chrome match:
 If you only want one language:
 
 1. Delete `/en/` (or `/index.html` if you'd rather keep English as the only one)
-2. Remove the `<div class="lang-switcher">` block from the surviving `<nav>` and the `<link rel="alternate" hreflang>` tags from `<head>`
+2. Remove the `<nav class="lang-switcher">` block from the surviving `<nav>` and the `<link rel="alternate" hreflang>` tags from `<head>`
 3. Remove the EN entry from `sitemap.xml` and the corresponding hreflang alternates
-4. Remove the small inline `<script>` that handles hash preservation across languages
+4. Optionally remove the language-switch hash handling at the end of `js/main.js`
 
 ### 6. PWA icons
 
@@ -166,16 +168,15 @@ firebase deploy --only hosting
 ├── css/
 │   └── styles.css          # All styles, CSS variables at top
 ├── js/
-│   ├── main.js             # Initializes modules + scroll/menu behavior
-│   ├── network-animation.js, scroll-animations.js
-│   ├── theme-switcher.js, skills-animation.js
-│   └── config-loader.js    # Reads config.yml → updates LinkedIn URL + photo src
+│   ├── main.js             # Nav, theme toggle, scroll reveal, footer year
+│   ├── topology.js         # Animated SVG network diagram in the hero
+│   └── cutrepodcast.js     # Latest podcast episodes (fetched from the podcast bucket)
+├── fonts/                  # Self-hosted JetBrains Mono (OFL licence included)
 ├── img/
 │   ├── profile.jpg         # Your face here
 │   ├── favicon.svg
 │   ├── icons/icon.svg      # Source for generate-icons.js
 │   └── projects/           # Sample project SVGs
-├── config.yml              # Lightweight runtime config (LinkedIn and photo)
 ├── manifest.json           # PWA manifest
 ├── service-worker.js       # Offline cache
 ├── sitemap.xml             # SEO with hreflang alternates
@@ -195,7 +196,6 @@ firebase deploy --only hosting
 
 A few things to double-check before pushing your fork to GitHub:
 
-- **`config.yml` is served publicly** at `<your-site>/config.yml`. Don't put anything in it you wouldn't put on the homepage. The current schema only uses `linkedin_url` and `profile_picture_url`.
 - **Your commit author email** is exposed in git history. If you don't want your real email on a public repo, set:
   ```bash
   git config user.email "<your-id>+<your-username>@users.noreply.github.com"

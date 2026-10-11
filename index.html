@@ -3,215 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio profesional de un experto en redes y sistemas, mostrando proyectos, habilidades y experiencia en arquitectura de redes, seguridad y automatización.">
-    <meta name="author" content="RJGU">
-    <meta name="theme-color" content="#060709">
-    <title>Portfolio | Network & Systems Administrator</title>
+    <title>Rogert Guevara · Network &amp; Systems Administrator</title>
+    <meta name="description" content="Rogert Guevara Uzcátegui, administrador de redes y sistemas en Palma. MikroTik, FortiGate, Proxmox y acceso remoto seguro; autor de FROGLM y del Cutrepodcast.">
+    <meta name="author" content="Rogert Guevara Uzcátegui">
+    <meta name="theme-color" content="#0b0d10">
     <link rel="canonical" href="https://rjgu.es/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
-    <meta property="og:title" content="Rogert Guevara | Network & Systems Administrator">
-    <meta property="og:description" content="Portfolio profesional de un experto en redes y sistemas, arquitectura, seguridad y automatización.">
+    <meta property="og:title" content="Rogert Guevara | Network &amp; Systems Administrator">
+    <meta property="og:description" content="Rogert Guevara Uzcátegui, administrador de redes y sistemas en Palma. MikroTik, FortiGate, Proxmox y acceso remoto seguro; autor de FROGLM y del Cutrepodcast.">
     <meta property="og:url" content="https://rjgu.es/">
     <meta property="og:image" content="https://rjgu.es/img/profile.jpg">
     <meta name="twitter:card" content="summary">
 
-    <!-- Idiomas alternativos -->
     <link rel="alternate" hreflang="es" href="https://rjgu.es/">
     <link rel="alternate" hreflang="en" href="https://rjgu.es/en/">
     <link rel="alternate" hreflang="x-default" href="https://rjgu.es/">
 
-    <!-- Favicon -->
     <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="img/icons/icon-192x192.png">
-
-    <!-- Manifest para PWA -->
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Estilos -->
+
+    <!-- Tema guardado antes de pintar, para evitar el parpadeo -->
+    <script>
+        (function () {
+            var theme = 'dark';
+            try { theme = localStorage.getItem('preferred-theme') === 'light' ? 'light' : 'dark'; } catch (e) {}
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.classList.add('js');
+        })();
+    </script>
+
+    <link rel="preload" href="fonts/jetbrains-mono-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navegación principal -->
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
+
     <nav class="main-nav" aria-label="Navegación principal">
-        <div class="logo">
-            <span>RJGU</span>
+        <div class="container nav-inner">
+            <a href="#inicio" class="logo" aria-label="RJGU"><span class="prompt">~/</span>rjgu<span class="cursor" aria-hidden="true"></span></a>
+            <div id="site-navigation" class="nav-links">
+                <a href="#sobre-mi" class="nav-link">Sobre mí</a>
+                <a href="#proyectos" class="nav-link">Proyectos</a>
+                <a href="#experiencia" class="nav-link">Experiencia</a>
+                <a href="#stack" class="nav-link">Stack</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+            </div>
+            <div class="nav-tools">
+                <nav class="lang-switcher" aria-label="Idioma">
+                    <a href="./" class="lang-link active" hreflang="es" aria-current="page">ES</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="en/" class="lang-link" hreflang="en">EN</a>
+                </nav>
+                <button type="button" class="icon-btn theme-toggle" aria-label="Cambiar a tema claro" title="Cambiar a tema claro">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                </button>
+                <button type="button" class="icon-btn menu-toggle" aria-controls="site-navigation" aria-expanded="false" aria-label="Abrir menú">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+            </div>
         </div>
-        <div id="site-navigation" class="nav-links">
-            <a href="#inicio" class="nav-link active" aria-current="location">Inicio</a>
-            <a href="#sobre-mi" class="nav-link">Sobre Mí</a>
-            <a href="#contenidos" class="nav-link">Contenidos</a>
-            <a href="#experiencia" class="nav-link">Experiencia</a>
-            <a href="#habilidades" class="nav-link">Habilidades</a>
-            <a href="#tecnologias" class="nav-link">Tecnologías</a>
-            <a href="#contacto" class="nav-link">Contacto</a>
-        </div>
-        <nav class="lang-switcher" aria-label="Idioma">
-            <a href="./" class="lang-link active" hreflang="es" aria-current="page">ES</a>
-            <span class="lang-sep">/</span>
-            <a href="en/" class="lang-link" hreflang="en">EN</a>
-        </nav>
-        <button type="button" class="theme-toggle" aria-label="Cambiar a tema claro" aria-pressed="true" title="Cambiar a tema claro">
-            <i class="fas fa-moon" aria-hidden="true"></i>
-        </button>
-        <button type="button" class="menu-toggle" aria-controls="site-navigation" aria-expanded="false" aria-label="Abrir menú">
-            <span class="hamburger" aria-hidden="true"></span>
-        </button>
     </nav>
 
     <main id="main-content">
-    <!-- Sección de inicio con animación de fondo -->
-    <section id="inicio" class="hero-section">
-        <div class="network-animation">
-            <canvas id="network-canvas" aria-hidden="true"></canvas>
-        </div>
-        <div class="hero-content">
-            <h1 class="glitch" data-text="Rogert Guevara Uzcátegui">Rogert Guevara Uzcátegui</h1>
-            <p class="subtitle">Network & Systems Administrator</p>
-            <p class="hero-tagline">Diseño redes robustas, automatizo infraestructuras y aseguro entornos enterprise</p>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <span class="hero-stat-number">+15</span>
-                    <span class="hero-stat-label">Años de experiencia</span>
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <p class="hero-kicker">Network &amp; Systems Administrator · Palma de Mallorca</p>
+                    <h1>Rogert Guevara Uzcátegui</h1>
+                    <p class="hero-tagline">Diseño y opero <strong>redes y sistemas para clientes enterprise</strong>. Fuera del trabajo monto homelabs con Proxmox y construyo herramientas con IA.</p>
+                    <div class="btn-row">
+                        <a href="mailto:rogert@rjgu.es" class="btn btn-primary arrow arrow-right">Escríbeme</a>
+                        <a href="Rogert-Guevara-CV.pdf" class="btn arrow arrow-down" download>CV (PDF)</a>
+                        <a href="https://www.linkedin.com/in/rogert-guevara-uzcategui" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href="https://github.com/rogertgu" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
                 </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <span class="hero-stat-number">+5</span>
-                    <span class="hero-stat-label">Vendors dominados</span>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <span class="hero-stat-number">2</span>
-                    <span class="hero-stat-label">Certificaciones</span>
-                </div>
+                <figure class="topology">
+                    <figcaption class="panel-bar">
+                        <span>~/lab/topology</span>
+                        <span class="live">up</span>
+                    </figcaption>
+                    <div class="topology-canvas"></div>
+                </figure>
             </div>
-            <div class="cta-buttons">
-                <a href="mailto:rogert@rjgu.es" class="btn btn-primary">Contactar</a>
-                <a href="#tecnologias" class="btn btn-secondary">Ver Tecnologías</a>
+            <dl class="statusline">
+            <div>
+                <dt>experiencia</dt>
+                <dd>15+ años</dd>
             </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="mouse">
-                <div class="wheel"></div>
+            <div>
+                <dt>puesto actual</dt>
+                <dd>Network Solutions Engineer @ OmniAccess</dd>
             </div>
-            <div class="arrow-scroll-down">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div>
+                <dt>base</dt>
+                <dd>Palma, Islas Baleares</dd>
             </div>
+            <div>
+                <dt>estado</dt>
+                <dd><span class="status-dot" aria-hidden="true"></span>Disponible para proyectos</dd>
+            </div>
+            </dl>
         </div>
     </section>
 
-    <!-- Sección Sobre Mí -->
-    <section id="sobre-mi" class="section section-with-separator">
+    <section id="sobre-mi" class="section">
         <div class="container">
-            <div class="section-header">
-                <h2>Sobre Mí</h2>
-                <div class="separator"></div>
-            </div>
-            <div class="about-content">
-                <div class="about-image">
-                    <div class="image-container">
-                        <img src="img/profile.jpg" alt="Foto de perfil" class="profile-image" width="800" height="800" loading="lazy" decoding="async">
-
-                    </div>
-                </div>
+            <header class="section-head reveal">
+                <span class="section-index">01</span>
+                <h2>Sobre mí</h2>
+            </header>
+            <div class="about reveal">
+                <figure class="about-photo">
+                    <img src="img/profile.jpg" alt="Foto de Rogert Guevara" width="800" height="800" loading="lazy" decoding="async">
+                </figure>
                 <div class="about-text">
-                    <h3>Network & Systems Administrator</h3>
-                    <p>Mi enfoque es práctico: elijo la mejor herramienta para cada desafío. Disfruto diseñando redes robustas con MikroTik, implementando seguridad perimetral con FortiGate y desplegando soluciones inalámbricas de alta capacidad con Ubiquiti.</p>
-                    <p>Mi pasión por la tecnología se extiende a mis aficiones: diseñando clústeres con Proxmox, gestionando aplicaciones en contenedores con Docker y explorando soluciones de red modernas como ZeroTier y Tailscale.</p>
-                    <div class="personal-info">
-                        <div class="info-item">
-                            <span class="info-title">Nombre:</span>
-                            <span class="info-value">Rogert Guevara Uzcátegui</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-title">Email:</span>
-                            <span class="info-value"><a href="mailto:rogert@rjgu.es">rogert@rjgu.es</a></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-title">Ubicación:</span>
-                            <span class="info-value">Palma, Islas Baleares, España</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-title">Disponibilidad:</span>
-                            <span class="info-value"><span class="availability-dot"></span> Disponible para proyectos</span>
-                        </div>
-                    </div>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/rogert-guevara-uzcategui" class="social-link linkedin-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="https://github.com/rogertgu" class="social-link" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                        <a href="Rogert-Guevara-CV.pdf" class="btn btn-outline download-cv" download>
-                        <i class="fas fa-download"></i> Descargar CV
-                    </a>
+                    <p>Mi enfoque es práctico: elijo la mejor herramienta para cada desafío. Disfruto diseñando redes robustas con <strong>MikroTik</strong>, implementando seguridad perimetral con <strong>FortiGate</strong> y desplegando soluciones inalámbricas de alta capacidad con <strong>Ubiquiti</strong>.</p>
+                    <p>Mi pasión por la tecnología se extiende a mis aficiones: diseñando clústeres con <strong>Proxmox</strong>, gestionando aplicaciones en contenedores con <strong>Docker</strong> y explorando soluciones de red modernas como <strong>ZeroTier</strong> y <strong>Tailscale</strong>.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección Contenidos -->
-    <section id="contenidos" class="section">
+    <section id="proyectos" class="section section-alt">
         <div class="container">
-            <div class="section-header">
-                <h2>Mis Contenidos</h2>
-                <div class="separator"></div>
-            </div>
-            <div class="content-links">
-                <div class="content-item featured-card">
-                    <div class="content-icon">
-                        <img src="img/froglm.svg" alt="FROGLM logo" width="1077" height="974" loading="lazy" decoding="async">
-                    </div>
-                    <div class="content-info">
-                        <h3>FROGLM</h3>
-                        <p class="content-tagline">Fair Ranking Of Generative Language Models</p>
-                        <p>Explora, filtra y rankea modelos de lenguaje IA. Mejores opciones por categoría de tamaño, mejor relación calidad/precio y aptos para self-hosting. Datos en vivo desde artificialanalysis.ai.</p>
-                        <a href="https://froglm.com/" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                            <i class="fas fa-external-link-alt"></i> Visitar froglm.com
-                        </a>
-                    </div>
-                </div>
-                <div class="content-item featured-card podcast-card" id="cutrepodcast">
-                    <div class="content-icon">
-                        <img src="img/cutrepodcast.jpg" alt="Portada del Cutrepodcast" width="288" height="288" loading="lazy" decoding="async">
-                    </div>
-                    <div class="content-info">
-                        <h3>Cutrepodcast</h3>
-                        <p class="content-tagline">Noticias tech diarias, escritas y locutadas por IA</p>
-                        <p>Podcast de tecnología 100 % automático: cada día laborable a las 7:00 una IA lee las noticias, escribe el guion con humor, lo locuta y genera la portada. Vuelve tras un año en pausa.</p>
-                        <ul class="podcast-episodes" aria-label="Últimos episodios" hidden></ul>
-                        <div class="podcast-platforms">
-                            <a href="https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                                <i class="fas fa-podcast"></i> Escuchar en iVoox
-                            </a>
-                            <!-- Spotify / Apple Podcasts: añadir aquí un botón .btn-secondary (fab fa-spotify / fas fa-podcast) cuando el podcast esté dado de alta. -->
-                            <a href="https://cutrepodcast.rjgu.es/feed.xml" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-                                <i class="fas fa-rss"></i> RSS
-                            </a>
+            <header class="section-head reveal">
+                <span class="section-index">02</span>
+                <h2>Proyectos</h2>
+            </header>
+            <div class="projects">
+                <article class="project reveal">
+                    <div class="project-head">
+                        <img src="img/froglm.svg" alt="" class="project-logo" width="52" height="52" loading="lazy" decoding="async">
+                        <div>
+                            <h3>FROGLM</h3>
+                            <span class="project-url">froglm.com</span>
                         </div>
                     </div>
-                </div>
+                    <p class="project-tagline">Fair Ranking Of Generative Language Models</p>
+                    <p class="project-desc">Explora, filtra y rankea modelos de lenguaje IA. Mejores opciones por categoría de tamaño, mejor relación calidad/precio y aptos para self-hosting. Datos en vivo desde artificialanalysis.ai.</p>
+                    <div class="btn-row">
+                        <a href="https://froglm.com/" class="btn btn-primary arrow arrow-ext" target="_blank" rel="noopener noreferrer">Visitar froglm.com</a>
+                    </div>
+                </article>
+                <article class="project reveal" id="cutrepodcast">
+                    <div class="project-head">
+                        <img src="img/cutrepodcast.jpg" alt="Portada del Cutrepodcast" class="project-logo" width="52" height="52" loading="lazy" decoding="async">
+                        <div>
+                            <h3>Cutrepodcast</h3>
+                            <span class="project-url">podcast diario</span>
+                        </div>
+                    </div>
+                    <p class="project-tagline">Noticias tech diarias, escritas y locutadas por IA</p>
+                    <p class="project-desc">Podcast de tecnología 100 % automático: cada día laborable a las 7:00 una IA lee las noticias, escribe el guion con humor, lo locuta y genera la portada. Vuelve tras un año en pausa.</p>
+                    <ul class="podcast-episodes" aria-label="Últimos episodios" hidden></ul>
+                    <div class="btn-row">
+                        <a href="https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html" class="btn btn-primary arrow arrow-ext" target="_blank" rel="noopener noreferrer">Escuchar en iVoox</a>
+                        <!-- Spotify / Apple Podcasts: añadir aquí otro enlace .btn cuando el podcast esté dado de alta. -->
+                        <a href="https://cutrepodcast.rjgu.es/feed.xml" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">RSS</a>
+                    </div>
+                </article>
+                <article class="project project-wide reveal">
+                    <div>
+                        <div class="project-head">
+                            <div>
+                                <h3>Homelab</h3>
+                                <span class="project-url">~/homelab</span>
+                            </div>
+                        </div>
+                        <p class="project-tagline">Mi laboratorio de redes y virtualización</p>
+                        <p class="project-desc">Donde pruebo y aprendo fuera del trabajo: un clúster Proxmox, aplicaciones en contenedores con Docker y acceso remoto con redes overlay.</p>
+                    </div>
+                    <dl class="spec">
+                        <div>
+                            <dt>virtualización</dt>
+                            <dd>Proxmox VE (clúster)</dd>
+                        </div>
+                        <div>
+                            <dt>contenedores</dt>
+                            <dd>Docker</dd>
+                        </div>
+                        <div>
+                            <dt>acceso remoto</dt>
+                            <dd>ZeroTier · Tailscale</dd>
+                        </div>
+                    </dl>
+                </article>
             </div>
         </div>
     </section>
 
-    <!-- Sección Experiencia -->
-    <section id="experiencia" class="section bg-alt">
+    <section id="experiencia" class="section">
         <div class="container">
-            <div class="section-header">
-                <h2>Experiencia Profesional</h2>
-                <div class="separator"></div>
-            </div>
+            <header class="section-head reveal">
+                <span class="section-index">03</span>
+                <h2>Experiencia</h2>
+            </header>
             <ol class="timeline">
-                <li class="timeline-item">
+                <li class="timeline-item reveal">
                     <span class="timeline-dot" aria-hidden="true"></span>
                     <article class="timeline-content">
                         <header class="timeline-company">
@@ -261,7 +254,7 @@
                         </ol>
                     </article>
                 </li>
-                <li class="timeline-item">
+                <li class="timeline-item reveal">
                     <span class="timeline-dot" aria-hidden="true"></span>
                     <article class="timeline-content">
                         <header class="timeline-company">
@@ -286,7 +279,7 @@
                         </ol>
                     </article>
                 </li>
-                <li class="timeline-item">
+                <li class="timeline-item reveal">
                     <span class="timeline-dot" aria-hidden="true"></span>
                     <article class="timeline-content">
                         <header class="timeline-company">
@@ -315,336 +308,128 @@
         </div>
     </section>
 
-    <!-- Sección Habilidades -->
-    <section id="habilidades" class="section">
+    <section id="stack" class="section section-alt">
         <div class="container">
-            <div class="section-header">
-                <h2>Habilidades Técnicas</h2>
-                <div class="separator"></div>
-            </div>
-            <div class="skills-container">
-                <div class="skills-category">
-                    <h3>Computer Networking</h3>
-                    <div class="skill-items">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">MikroTik RouterOS</span>
-                                <span class="skill-percentage">95%</span>
-                            </div>
-                            <div class="skill-bar" data-value="95">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">FortiGate Security</span>
-                                <span class="skill-percentage">90%</span>
-                            </div>
-                            <div class="skill-bar" data-value="90">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Cisco & Huawei</span>
-                                <span class="skill-percentage">80%</span>
-                            </div>
-                            <div class="skill-bar" data-value="80">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Ubiquiti Wireless</span>
-                                <span class="skill-percentage">80%</span>
-                            </div>
-                            <div class="skill-bar" data-value="80">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="skills-category">
-                    <h3>Virtualización</h3>
-                    <div class="skill-items">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Proxmox</span>
-                                <span class="skill-percentage">95%</span>
-                            </div>
-                            <div class="skill-bar" data-value="95">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Docker</span>
-                                <span class="skill-percentage">85%</span>
-                            </div>
-                            <div class="skill-bar" data-value="85">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Hyper-V</span>
-                                <span class="skill-percentage">80%</span>
-                            </div>
-                            <div class="skill-bar" data-value="80">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">VMware</span>
-                                <span class="skill-percentage">65%</span>
-                            </div>
-                            <div class="skill-bar" data-value="65">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="skills-category">
-                    <h3>Secure Remote Access</h3>
-                    <div class="skill-items">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">BeyondTrust PRA</span>
-                                <span class="skill-percentage">97%</span>
-                            </div>
-                            <div class="skill-bar" data-value="97">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">ZeroTier</span>
-                                <span class="skill-percentage">90%</span>
-                            </div>
-                            <div class="skill-bar" data-value="90">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Tailscale</span>
-                                <span class="skill-percentage">85%</span>
-                            </div>
-                            <div class="skill-bar" data-value="85">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Wireguard</span>
-                                <span class="skill-percentage">85%</span>
-                            </div>
-                            <div class="skill-bar" data-value="85">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">OpenVPN</span>
-                                <span class="skill-percentage">70%</span>
-                            </div>
-                            <div class="skill-bar" data-value="70">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="certifications">
-                <h3>Certificaciones</h3>
-                <div class="cert-container">
-                    <div class="cert-item">
-                        <div class="cert-icon">
-                            <i class="fas fa-certificate"></i>
-                        </div>
-                        <div class="cert-info">
-                            <h4>BeyondTrust Certified Administrator</h4>
-                            <p>Privileged Remote Access</p>
-                        </div>
-                    </div>
-                    <div class="cert-item">
-                        <div class="cert-icon">
-                            <i class="fas fa-certificate"></i>
-                        </div>
-                        <div class="cert-info">
-                            <h4>Huawei Certified ICT Associate</h4>
-                            <p>HCIA Access</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Tecnologías Destacadas -->
-    <section id="tecnologias" class="section bg-alt">
-        <div class="container">
-            <div class="section-header">
-                <h2>Tecnologías Destacadas</h2>
-                <div class="separator"></div>
-            </div>
-            <div class="tech-categories">
-                <div class="tech-category">
-                    <div class="tech-category-icon"><i class="fas fa-network-wired"></i></div>
+            <header class="section-head reveal">
+                <span class="section-index">04</span>
+                <h2>Stack</h2>
+            </header>
+            <div class="stack">
+                <div class="stack-row reveal">
                     <h3>Networking</h3>
-                    <div class="tech-tags">
-                        <span class="tech-tag">MikroTik RouterOS</span>
-                        <span class="tech-tag">Cisco</span>
-                        <span class="tech-tag">Huawei</span>
-                        <span class="tech-tag">FortiGate</span>
-                        <span class="tech-tag">Ubiquiti</span>
-                        <span class="tech-tag">OpenVPN</span>
-                        <span class="tech-tag">ZeroTier</span>
-                        <span class="tech-tag">Tailscale</span>
+                    <ul class="chips">
+                        <li class="chip is-core">MikroTik RouterOS</li>
+                        <li class="chip is-core">FortiGate</li>
+                        <li class="chip">Cisco</li>
+                        <li class="chip">Huawei</li>
+                        <li class="chip">Ubiquiti</li>
+                        <li class="chip">OpenWRT</li>
+                    </ul>
+                </div>
+                <div class="stack-row reveal">
+                    <h3>Virtualización y contenedores</h3>
+                    <ul class="chips">
+                        <li class="chip is-core">Proxmox</li>
+                        <li class="chip">Docker</li>
+                        <li class="chip">Hyper-V</li>
+                        <li class="chip">VMware</li>
+                        <li class="chip">LXC</li>
+                        <li class="chip">Portainer</li>
+                        <li class="chip">Dokploy</li>
+                    </ul>
+                </div>
+                <div class="stack-row reveal">
+                    <h3>Acceso remoto y seguridad</h3>
+                    <ul class="chips">
+                        <li class="chip is-core">BeyondTrust PRA</li>
+                        <li class="chip is-core">ZeroTier</li>
+                        <li class="chip">Tailscale</li>
+                        <li class="chip">WireGuard</li>
+                        <li class="chip">OpenVPN</li>
+                    </ul>
+                </div>
+                <div class="stack-row reveal">
+                    <h3>Sistemas y servicios</h3>
+                    <ul class="chips">
+                        <li class="chip">Linux</li>
+                        <li class="chip">Windows Server</li>
+                        <li class="chip">Raspberry Pi</li>
+                        <li class="chip">3CX</li>
+                        <li class="chip">Rundeck</li>
+                        <li class="chip">CCTV</li>
+                        <li class="chip">Monitorización de red</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="stack-legend"><span class="core-mark" aria-hidden="true"></span>especialidad principal</p>
+            <h3 class="subhead">Certificaciones</h3>
+            <div class="certs">
+                <div class="cert reveal">
+                    <span class="cert-badge" aria-hidden="true">BT</span>
+                    <div>
+                        <h4>BeyondTrust Certified Administrator</h4>
+                        <p>Privileged Remote Access</p>
                     </div>
                 </div>
-                <div class="tech-category">
-                    <div class="tech-category-icon"><i class="fas fa-server"></i></div>
-                    <h3>Virtualización</h3>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Proxmox</span>
-                        <span class="tech-tag">VMware</span>
-                        <span class="tech-tag">Hyper-V</span>
-                        <span class="tech-tag">Docker</span>
-                        <span class="tech-tag">LXC</span>
-                    </div>
-                </div>
-                <div class="tech-category">
-                    <div class="tech-category-icon"><i class="fas fa-terminal"></i></div>
-                    <h3>Sistemas</h3>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Linux</span>
-                        <span class="tech-tag">Windows Server</span>
-                        <span class="tech-tag">OpenWRT</span>
-                        <span class="tech-tag">Raspberry Pi</span>
-                        <span class="tech-tag">3CX</span>
-                        <span class="tech-tag">Rundeck</span>
-                        <span class="tech-tag">Portainer</span>
-                        <span class="tech-tag">Dokploy</span>
-                    </div>
-                </div>
-                <div class="tech-category">
-                    <div class="tech-category-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Seguridad</h3>
-                    <div class="tech-tags">
-                        <span class="tech-tag">BeyondTrust</span>
-                        <span class="tech-tag">Firewall</span>
-                        <span class="tech-tag">VPN</span>
-                        <span class="tech-tag">CCTV</span>
-                        <span class="tech-tag">Network Monitoring</span>
+                <div class="cert reveal">
+                    <span class="cert-badge" aria-hidden="true">HCIA</span>
+                    <div>
+                        <h4>Huawei Certified ICT Associate</h4>
+                        <p>HCIA Access</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección Contacto -->
     <section id="contacto" class="section">
         <div class="container">
-            <div class="section-header">
+            <header class="section-head reveal">
+                <span class="section-index">05</span>
                 <h2>Contacto</h2>
-                <div class="separator"></div>
-            </div>
-            <div class="contact-center">
-                <p class="contact-intro">¿Tienes un proyecto en mente o quieres hablar sobre redes y sistemas? Escríbeme.</p>
-                <div class="contact-cards">
-                    <a href="mailto:rogert@rjgu.es" class="contact-card">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <h3>Email</h3>
-                        <p>rogert@rjgu.es</p>
-                    </a>
-                    <div class="contact-card">
-                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <h3>Ubicación</h3>
-                        <p>Palma, Islas Baleares, España</p>
-                    </div>
-                    <div class="contact-card">
-                        <div class="contact-icon"><i class="fas fa-circle-check"></i></div>
-                        <h3>Disponibilidad</h3>
-                        <p><span class="availability-dot"></span> Disponible para proyectos</p>
-                    </div>
+            </header>
+            <div class="contact reveal">
+                <div>
+                    <p class="contact-intro">¿Tienes un proyecto en mente o quieres hablar sobre redes y sistemas? Escríbeme.</p>
+                    <a href="mailto:rogert@rjgu.es" class="contact-mail">rogert@rjgu.es</a>
                 </div>
-                <a href="mailto:rogert@rjgu.es" class="btn btn-primary contact-cta">
-                    <i class="fas fa-paper-plane"></i> Enviar Email
-                </a>
+                <dl class="contact-meta">
+                    <div>
+                        <dt>linkedin</dt>
+                        <dd><a href="https://www.linkedin.com/in/rogert-guevara-uzcategui" class="arrow arrow-ext" target="_blank" rel="noopener noreferrer">rogert-guevara-uzcategui</a></dd>
+                    </div>
+                    <div>
+                        <dt>github</dt>
+                        <dd><a href="https://github.com/rogertgu" class="arrow arrow-ext" target="_blank" rel="noopener noreferrer">rogertgu</a></dd>
+                    </div>
+                    <div>
+                        <dt>cv</dt>
+                        <dd><a href="Rogert-Guevara-CV.pdf" class="arrow arrow-down" download>Rogert-Guevara-CV.pdf</a></dd>
+                    </div>
+                </dl>
             </div>
         </div>
     </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span>RJGU</span>
-                    <p>Network & Systems Administrator</p>
-                </div>
-                <div class="footer-nav">
-                    <a href="#inicio">Inicio</a>
-                    <a href="#sobre-mi">Sobre Mí</a>
-                    <a href="#experiencia">Experiencia</a>
-                    <a href="#habilidades">Habilidades</a>
-                    <a href="#tecnologias">Tecnologías</a>
-                    <a href="#contacto">Contacto</a>
-                </div>
-                <div class="footer-social">
-                    <a href="https://www.linkedin.com/in/rogert-guevara-uzcategui" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="https://github.com/rogertgu" class="social-link" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <span id="current-year"></span> RJGU - Todos los derechos reservados</p>
-                <p>Vibe-coded con IA <i class="fas fa-robot"></i></p>
-            </div>
+            <span>&copy; <span id="current-year">2026</span> RJGU · Network &amp; Systems Administrator</span>
+            <span>Vibe-coded con IA</span>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="js/main.js"></script>
-    <script src="js/network-animation.js"></script>
-    <script src="js/scroll-animations.js"></script>
-    <script src="js/theme-switcher.js"></script>
-    <script src="js/skills-animation.js"></script>
-    <script src="js/config-loader.js" defer></script>
+    <script src="js/topology.js"></script>
     <script src="js/cutrepodcast.js" defer></script>
-    
-    <!-- Preservar hash al cambiar de idioma -->
-    <script>
-        document.querySelectorAll('.lang-switcher .lang-link').forEach(a => {
-            a.addEventListener('click', e => {
-                const t = e.currentTarget;
-                if (location.hash && !t.classList.contains('active')) {
-                    t.href = t.getAttribute('href') + location.hash;
-                }
-            });
-        });
-    </script>
 
     <!-- Service Worker para PWA -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                const serviceWorkerPath = document.documentElement.lang === 'en'
-                    ? '../service-worker.js'
-                    : 'service-worker.js';
-                navigator.serviceWorker.register(new URL(serviceWorkerPath, document.baseURI).pathname)
-                    .then(registration => {
-                        console.log('Service Worker registrado con éxito:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Error al registrar el Service Worker:', error);
-                    });
+                navigator.serviceWorker.register(new URL('service-worker.js', document.baseURI).pathname)
+                    .then(registration => console.log('Service Worker registrado con éxito:', registration.scope))
+                    .catch(error => console.log('Error al registrar el Service Worker:', error));
             });
         }
     </script>

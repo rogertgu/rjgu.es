@@ -85,7 +85,6 @@ Si prefieres usar el método tradicional que ya conoces:
 
 - `.github/workflows/deploy.yml` - Workflow de GitHub Actions
 - `CNAME` - Configuración del dominio personalizado (rjgu.es)
-- `config.yml` - Configuración del sitio
 - `index.html` - Página principal
 - Todos los archivos estáticos (CSS, JS, imágenes)
 
