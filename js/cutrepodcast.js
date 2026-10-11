@@ -1,74 +1,140 @@
 /**
  * cutrepodcast.js
- * Carga los últimos episodios del Cutrepodcast desde su bucket público (R2)
- * y los pinta con reproductor en la card #cutrepodcast. Si falla, la card
- * se queda con la descripción y los enlaces estáticos.
+ * Página /cutrepodcast/ (ES) y /en/cutrepodcast/ (EN): carga todos los
+ * episodios desde el bucket público (R2) y los pinta con su reproductor,
+ * del más reciente al más antiguo. El CORS del bucket solo admite rjgu.es,
+ * así que en local se queda en el mensaje de error con los enlaces a iVoox/RSS.
  */
 (function () {
-    const card = document.getElementById('cutrepodcast');
-    if (!card) return;
+    'use strict';
 
-    const FEED_BASE = 'https://cutrepodcast.rjgu.es';
-    const MAX_EPISODES = 3;
-    const lang = document.documentElement.lang === 'en' ? 'en' : 'es';
-    const list = card.querySelector('.podcast-episodes');
+    const list = document.querySelector('.episodes');
+    if (!list) return;
+
+    const FEED = 'https://cutrepodcast.rjgu.es/episodes.json';
+    const isEnglish = document.documentElement.lang === 'en';
+    const status = document.querySelector('.episodes-status');
+    const errorBox = document.querySelector('.episodes-error');
+    const fallbackCover = document.querySelector('.podcast-cover')?.src || '';
+
+    const t = isEnglish
+        ? {
+            locale: 'en-GB',
+            more: 'Show more',
+            less: 'Show less',
+            summary: (count, last) => `${count} episodes · latest ${last}`
+        }
+        : {
+            locale: 'es-ES',
+            more: 'Ver más',
+            less: 'Ver menos',
+            summary: (count, last) => `${count} episodios · último el ${last}`
+        };
 
     const formatDate = iso => new Date(`${iso}T12:00:00`).toLocaleDateString(
-        lang === 'en' ? 'en-GB' : 'es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
-    const formatDuration = seconds => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+        t.locale, { day: 'numeric', month: 'short', year: 'numeric' });
+
+    const formatDuration = total => {
+        const hours = Math.floor(total / 3600);
+        const minutes = Math.floor((total % 3600) / 60);
+        const seconds = String(total % 60).padStart(2, '0');
+        return hours ? `${hours}:${String(minutes).padStart(2, '0')}:${seconds}` : `${minutes}:${seconds}`;
+    };
+
+    const el = (tag, className, text) => {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+    };
 
     const renderEpisode = episode => {
-        const item = document.createElement('li');
-        item.className = 'podcast-episode';
+        const item = el('li', 'episode');
+        item.id = `ep-${episode.number}`;
 
-        const cover = document.createElement('img');
-        cover.src = episode.image_url || '/img/cutrepodcast.jpg';
+        const cover = el('img', 'episode-cover');
+        cover.src = episode.image_url || fallbackCover;
         cover.alt = '';
-        cover.width = 64;
-        cover.height = 64;
+        cover.width = 96;
+        cover.height = 96;
         cover.loading = 'lazy';
         cover.decoding = 'async';
 
-        const body = document.createElement('div');
-        body.className = 'podcast-episode-body';
+        const body = el('div', 'episode-body');
 
-        const title = document.createElement('p');
-        title.className = 'podcast-episode-title';
-        title.textContent = episode.full_title || episode.title;
+        const meta = el('p', 'episode-meta');
+        const number = el('a', 'episode-num', `#${episode.number}`);
+        number.href = `#ep-${episode.number}`;
+        meta.append(number, el('span', '', formatDate(episode.date)));
+        if (episode.duration) meta.append(el('span', '', formatDuration(episode.duration)));
 
-        const meta = document.createElement('p');
-        meta.className = 'podcast-episode-meta';
-        meta.textContent = `${formatDate(episode.date)} · ${formatDuration(episode.duration)}`;
+        const title = el('h3', 'episode-title', episode.title || episode.full_title);
+        body.append(meta, title);
 
-        const audio = document.createElement('audio');
+        if (episode.description) {
+            const description = el('p', 'episode-desc', episode.description.trim());
+            const toggle = el('button', 'episode-more', t.more);
+            toggle.type = 'button';
+            toggle.hidden = true;
+            toggle.setAttribute('aria-expanded', 'false');
+            body.append(description, toggle);
+        }
+
+        const audio = el('audio');
         audio.controls = true;
         audio.preload = 'none';
         audio.src = episode.audio_url;
+        audio.setAttribute('aria-label', episode.full_title || episode.title);
+        body.append(audio);
 
-        body.append(title, meta, audio);
         item.append(cover, body);
         return item;
     };
 
-    fetch(`${FEED_BASE}/episodes.json`, { cache: 'no-cache' })
+    fetch(FEED, { cache: 'no-cache' })
         .then(response => {
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             return response.json();
         })
         .then(episodes => {
-            const latest = episodes
+            const playable = episodes
                 .filter(episode => episode.audio_url)
-                .sort((a, b) => b.number - a.number)
-                .slice(0, MAX_EPISODES);
-            if (!latest.length) return;
-            list.replaceChildren(...latest.map(renderEpisode));
-            list.hidden = false;
-        })
-        .catch(error => console.warn('Cutrepodcast: no se pudieron cargar los episodios', error));
+                .sort((a, b) => b.number - a.number);
+            if (!playable.length) throw new Error('sin episodios');
 
-    // Un solo reproductor sonando a la vez.
-    card.addEventListener('play', event => {
-        card.querySelectorAll('audio').forEach(audio => {
+            list.replaceChildren(...playable.map(renderEpisode));
+            list.hidden = false;
+            status.textContent = t.summary(playable.length, formatDate(playable[0].date));
+
+            // "Ver más" solo donde la descripción está recortada
+            requestAnimationFrame(() => {
+                list.querySelectorAll('.episode-desc').forEach(description => {
+                    if (description.scrollHeight > description.clientHeight + 2) {
+                        description.nextElementSibling.hidden = false;
+                    }
+                });
+                if (location.hash.startsWith('#ep-')) {
+                    document.getElementById(location.hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
+                }
+            });
+        })
+        .catch(error => {
+            console.warn('Cutrepodcast: no se pudieron cargar los episodios', error);
+            status.hidden = true;
+            errorBox.hidden = false;
+        });
+
+    list.addEventListener('click', event => {
+        const toggle = event.target.closest('.episode-more');
+        if (!toggle) return;
+        const open = toggle.previousElementSibling.classList.toggle('is-open');
+        toggle.textContent = open ? t.less : t.more;
+        toggle.setAttribute('aria-expanded', String(open));
+    });
+
+    // Un solo reproductor sonando a la vez
+    list.addEventListener('play', event => {
+        list.querySelectorAll('audio').forEach(audio => {
             if (audio !== event.target) audio.pause();
         });
     }, true);

@@ -4,7 +4,7 @@
  */
 
 // Nombre y versión de la caché
-const CACHE_NAME = 'portfolio-cache-v7';
+const CACHE_NAME = 'portfolio-cache-v8';
 const APP_ROOT = new URL('./', self.location).pathname;
 const assetUrl = path => `${APP_ROOT}${path.replace(/^\/+/, '')}`;
 
@@ -14,6 +14,8 @@ const urlsToCache = [
   assetUrl('index.html'),
   assetUrl('en/'),
   assetUrl('en/index.html'),
+  assetUrl('cutrepodcast/'),
+  assetUrl('en/cutrepodcast/'),
   assetUrl('css/styles.css'),
   assetUrl('fonts/jetbrains-mono-latin-wght.woff2'),
   assetUrl('js/main.js'),

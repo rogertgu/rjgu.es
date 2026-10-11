@@ -738,56 +738,6 @@ section[id] {
     color: var(--faint);
 }
 
-/* Episodios del Cutrepodcast (los pinta js/cutrepodcast.js) */
-.podcast-episodes {
-    display: grid;
-    gap: 10px;
-    margin-bottom: 22px;
-}
-
-.podcast-episode {
-    display: grid;
-    grid-template-columns: 52px 1fr;
-    gap: 12px;
-    align-items: center;
-    padding: 10px;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-}
-
-.podcast-episode img {
-    width: 52px;
-    height: 52px;
-    border-radius: 6px;
-    object-fit: cover;
-}
-
-.podcast-episode-body {
-    min-width: 0;
-}
-
-.podcast-episode-title {
-    font-size: 0.88rem;
-    font-weight: 600;
-    line-height: 1.35;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.podcast-episode-meta {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--faint);
-    margin-bottom: 6px;
-}
-
-.podcast-episode audio {
-    width: 100%;
-    height: 32px;
-}
-
 /* ===== EXPERIENCIA ===== */
 .timeline {
     position: relative;
@@ -1072,6 +1022,155 @@ section[id] {
     color: var(--accent);
 }
 
+/* ===== PÁGINA DEL CUTREPODCAST ===== */
+.nav-back {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    white-space: nowrap;
+    color: var(--muted);
+    transition: color var(--ease);
+}
+
+.nav-back::before {
+    content: '← ';
+    color: var(--accent);
+}
+
+.nav-back:hover {
+    color: var(--text);
+}
+
+.podcast-hero {
+    padding-bottom: 24px;
+}
+
+.podcast-intro {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 44px;
+    align-items: center;
+}
+
+.podcast-cover {
+    width: 200px;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.podcast-intro h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    letter-spacing: -0.04em;
+    margin-bottom: 10px;
+}
+
+.podcast-lead {
+    color: var(--muted);
+    max-width: 62ch;
+    margin-bottom: 24px;
+}
+
+.episodes-status,
+.episodes-error {
+    margin: -24px 0 28px;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--faint);
+}
+
+.episodes-error a {
+    color: var(--accent);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.4);
+}
+
+.episodes {
+    display: grid;
+    gap: 14px;
+}
+
+.episode {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 20px;
+    padding: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+.episode:target {
+    border-color: var(--accent);
+}
+
+.episode-cover {
+    width: 96px;
+    height: 96px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.episode-body {
+    min-width: 0;
+}
+
+.episode-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 12px;
+    margin-bottom: 4px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--faint);
+}
+
+.episode-num {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.episode-title {
+    font-size: 1.02rem;
+    line-height: 1.35;
+    margin-bottom: 6px;
+}
+
+.episode-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    white-space: pre-line;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.episode-desc.is-open {
+    display: block;
+}
+
+.episode-more {
+    margin-top: 4px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    cursor: pointer;
+}
+
+.episode audio {
+    display: block;
+    width: 100%;
+    height: 36px;
+    margin-top: 12px;
+}
+
 /* ===== FOOTER ===== */
 .footer {
     padding: 28px 0;
@@ -1216,6 +1315,26 @@ section[id] {
 
     .spec div {
         grid-template-columns: 90px 1fr;
+    }
+
+    .podcast-intro {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .podcast-cover {
+        width: 120px;
+    }
+
+    .episode {
+        grid-template-columns: 64px 1fr;
+        gap: 14px;
+        padding: 14px;
+    }
+
+    .episode-cover {
+        width: 64px;
+        height: 64px;
     }
 }
 

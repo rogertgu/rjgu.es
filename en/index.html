@@ -160,9 +160,9 @@
                     </div>
                     <p class="project-tagline">Daily tech news, written and voiced by AI (in Spanish)</p>
                     <p class="project-desc">A fully automated tech podcast: every weekday at 7:00 (Madrid) an AI reads the news, writes a humorous script, voices it and draws the cover. Back after a year-long break.</p>
-                    <ul class="podcast-episodes" aria-label="Latest episodes" hidden></ul>
                     <div class="btn-row">
-                        <a href="https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html" class="btn btn-primary arrow arrow-ext" target="_blank" rel="noopener noreferrer">Listen on iVoox</a>
+                        <a href="cutrepodcast/" class="btn btn-primary arrow arrow-right">Listen to episodes</a>
+                        <a href="https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">iVoox</a>
                         <!-- Spotify / Apple Podcasts: añadir aquí otro enlace .btn cuando el podcast esté dado de alta. -->
                         <a href="https://cutrepodcast.rjgu.es/feed.xml" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">RSS</a>
                     </div>
@@ -176,7 +176,7 @@
                             </div>
                         </div>
                         <p class="project-tagline">My networking and virtualization lab</p>
-                        <p class="project-desc">Where I test and learn off the clock: a Proxmox server hosting autonomous AI agents (Hermes and OpenClaw), each in its own VM or container, plus Docker apps and remote access over overlay networks.</p>
+                        <p class="project-desc">Where I test and learn off the clock: a Proxmox server hosting autonomous AI agents (Hermes and OpenClaw) for myself and others, each in its own VM or container. Third-party agents are isolated from my network.</p>
                     </div>
                     <dl class="spec">
                         <div>
@@ -186,6 +186,10 @@
                         <div>
                             <dt>AI agents</dt>
                             <dd>Hermes · OpenClaw</dd>
+                        </div>
+                        <div>
+                            <dt>isolation</dt>
+                            <dd>third parties off my LAN</dd>
                         </div>
                         <div>
                             <dt>containers</dt>
@@ -425,7 +429,6 @@
 
     <script src="../js/main.js"></script>
     <script src="../js/topology.js"></script>
-    <script src="../js/cutrepodcast.js" defer></script>
 
     <!-- Service Worker para PWA -->
     <script>

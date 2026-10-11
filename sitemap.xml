@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://rjgu.es/</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://rjgu.es/"/>
@@ -12,11 +12,29 @@
   </url>
   <url>
     <loc>https://rjgu.es/en/</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://rjgu.es/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://rjgu.es/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rjgu.es/"/>
+  </url>
+  <url>
+    <loc>https://rjgu.es/cutrepodcast/</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rjgu.es/cutrepodcast/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rjgu.es/en/cutrepodcast/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rjgu.es/cutrepodcast/"/>
+  </url>
+  <url>
+    <loc>https://rjgu.es/en/cutrepodcast/</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rjgu.es/cutrepodcast/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rjgu.es/en/cutrepodcast/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rjgu.es/cutrepodcast/"/>
   </url>
 </urlset>

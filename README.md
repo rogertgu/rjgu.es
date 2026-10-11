@@ -164,13 +164,16 @@ firebase deploy --only hosting
 .
 ├── index.html              # Spanish entrypoint (/)
 ├── en/
-│   └── index.html          # English entrypoint (/en/)
+│   ├── index.html          # English entrypoint (/en/)
+│   └── cutrepodcast/       # English podcast page (/en/cutrepodcast/)
+├── cutrepodcast/           # Podcast page with every episode (/cutrepodcast/)
+├── cv/                     # CV source (HTML) → PDFs via scripts/build-cv.sh
 ├── css/
 │   └── styles.css          # All styles, CSS variables at top
 ├── js/
 │   ├── main.js             # Nav, theme toggle, scroll reveal, footer year
 │   ├── topology.js         # Animated SVG network diagram in the hero
-│   └── cutrepodcast.js     # Latest podcast episodes (fetched from the podcast bucket)
+│   └── cutrepodcast.js     # Episode list + players for /cutrepodcast/ (fetched from the podcast bucket)
 ├── fonts/                  # Self-hosted JetBrains Mono (OFL licence included)
 ├── img/
 │   ├── profile.jpg         # Your face here

@@ -19,7 +19,7 @@ for (const file of ['package.json', 'manifest.json', 'firebase.json']) {
   }
 }
 
-for (const file of ['index.html', 'en/index.html']) {
+for (const file of ['index.html', 'en/index.html', 'cutrepodcast/index.html', 'en/cutrepodcast/index.html']) {
   const html = read(file);
   report(html.includes('<main'), `${file}: falta el elemento <main>`);
   report((html.match(/<h1\b/g) || []).length === 1, `${file}: debe contener exactamente un <h1>`);

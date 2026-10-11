@@ -7,7 +7,8 @@ Web personal/portfolio de Rogert Guevara (Network & Systems Administrator) en ht
 - Ruta: `~/work/rjgu/rjgu.es` (TARS-11). Remoto: `git@github.com:rogertgu/rjgu.es.git` (privado), rama `main`.
 - `index.html` (ES) y `en/index.html` (EN): contenido duplicado; cualquier cambio de contenido o estructura va en ambos.
 - `css/styles.css`: todos los estilos, estilo "ingeniería/terminal" (rediseño B). Tema oscuro por defecto; claro con `[data-theme="light"]` en `<html>`, fijado antes de pintar por un script en el `<head>` (clave `preferred-theme` en localStorage).
-- `js/`: `main.js` (menú, enlace activo, tema, aparición `.reveal`, año), `topology.js` (diagrama SVG animado del hero, red genérica), `cutrepodcast.js` (últimos episodios desde `https://cutrepodcast.rjgu.es/episodes.json`).
+- `js/`: `main.js` (menú, enlace activo, tema, aparición `.reveal`, año), `topology.js` (diagrama SVG animado del hero, red genérica), `cutrepodcast.js` (lista completa de episodios con reproductor en `/cutrepodcast/`, desde `https://cutrepodcast.rjgu.es/episodes.json`).
+- `cutrepodcast/index.html` (ES) y `en/cutrepodcast/index.html` (EN): página del podcast con todos los episodios (enlace directo `#ep-N`). La tarjeta de la portada solo enlaza aquí, a iVoox y al RSS.
 - `fonts/`: JetBrains Mono variable (subset latin, OFL) alojada en la propia web. Sin Google Fonts ni Font Awesome; iconos en SVG en línea y flechas con máscaras CSS (`.arrow-ext`, `.arrow-right`, `.arrow-down`).
 - `service-worker.js` + `manifest.json` (PWA); los iconos están en `img/icons/`.
 - `cv/`: CV en HTML (`es.html`, `en.html`, `cv.css`), A4 de una página, mismo estilo que la web en claro. Los PDF se generan con `scripts/build-cv.sh` (Chrome headless) → `Rogert-Guevara-CV.pdf` (ES) y `Rogert-Guevara-CV-EN.pdf` (EN). Usa `fonts/inter-latin-wght.woff2` (Inter, OFL) solo para el CV.
@@ -24,7 +25,7 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 ```
 - Despliegue: GitHub Actions (`.github/workflows/deploy.yml`) publica en GitHub Pages en cada push a `main` (las PR solo validan). `CNAME` = `rjgu.es`, con Cloudflare como proxy delante.
 - **Hacer push a `main` publica la web en producción.**
-- En local la tarjeta del Cutrepodcast no carga episodios: el CORS del bucket R2 solo admite el origen `rjgu.es`. Es lo esperado.
+- En local `/cutrepodcast/` muestra el mensaje de error (con enlaces a iVoox/RSS): el CORS del bucket R2 solo admite el origen `rjgu.es`. Para probar con datos, descargar el JSON y servirlo con `page.route` de Playwright.
 
 ## Estado actual
 (Actualizado 2026-10-11)
@@ -33,7 +34,7 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 
 ## Próximos pasos
 1. CV: añadir formación e idiomas cuando Rogert los dé (no inventarlos) y, si los aporta, logros concretos por puesto en OmniAccess. Tras editar `cv/*.html`: `scripts/build-cv.sh`.
-2. Homelab: los agentes (Hermes/OpenClaw) están en la VLAN 24 según la doc del homelab; no afirmar "aislados de la red" salvo que Rogert lo confirme.
+2. La doc del homelab (`~/homelab/infra/network/vlans.md`, 2026-09-27) sitúa MAMA y CRIS en la VLAN 24; Rogert dice (2026-10-11) que los agentes de terceros están aislados. Si se toca esa doc, actualizarla allí (otro repo).
 3. Opcional: renombrar `vm-01`/`vm-02` de la topología a `hermes`/`openclaw`.
 4. Opcional: `img/projects/` parece sin uso; revisar y borrar.
 
@@ -52,3 +53,4 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - 2026-10-11 — Claude Code — Rediseño B ("ingeniería/terminal") en la rama `redesign-b`: CSS y JS reescritos, nueva estructura, fuente alojada en la web, eliminados config.yml/config-loader y 4 JS antiguos. Página en escritorio de ~8.300 a 4.724 px; en móvil de 10.162 a 6.904 px.
 - 2026-10-11 — Claude Code — Homelab con agentes de IA; párrafo de Sobre mí recortado; CV rehecho en HTML→PDF (`cv/`, `scripts/build-cv.sh`), una página ES/EN, pendiente de aprobación.
 - 2026-10-11 — Claude Code — Publicado el rediseño B y el CV nuevo (ES/EN) en rjgu.es.
+- 2026-10-11 — Claude Code — Página `/cutrepodcast/` (ES/EN) con todos los episodios; tarjeta de la portada reducida a enlaces. Homelab: agentes de terceros aislados de la LAN (confirmado por Rogert).

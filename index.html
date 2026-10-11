@@ -160,9 +160,9 @@
                     </div>
                     <p class="project-tagline">Noticias tech diarias, escritas y locutadas por IA</p>
                     <p class="project-desc">Podcast de tecnología 100 % automático: cada día laborable a las 7:00 una IA lee las noticias, escribe el guion con humor, lo locuta y genera la portada. Vuelve tras un año en pausa.</p>
-                    <ul class="podcast-episodes" aria-label="Últimos episodios" hidden></ul>
                     <div class="btn-row">
-                        <a href="https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html" class="btn btn-primary arrow arrow-ext" target="_blank" rel="noopener noreferrer">Escuchar en iVoox</a>
+                        <a href="cutrepodcast/" class="btn btn-primary arrow arrow-right">Escuchar episodios</a>
+                        <a href="https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">iVoox</a>
                         <!-- Spotify / Apple Podcasts: añadir aquí otro enlace .btn cuando el podcast esté dado de alta. -->
                         <a href="https://cutrepodcast.rjgu.es/feed.xml" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">RSS</a>
                     </div>
@@ -176,7 +176,7 @@
                             </div>
                         </div>
                         <p class="project-tagline">Mi laboratorio de redes y virtualización</p>
-                        <p class="project-desc">Donde pruebo y aprendo fuera del trabajo: un servidor Proxmox que aloja agentes de IA autónomos (Hermes y OpenClaw), cada uno en su propia VM o contenedor, además de aplicaciones en Docker y acceso remoto con redes overlay.</p>
+                        <p class="project-desc">Donde pruebo y aprendo fuera del trabajo: un servidor Proxmox que aloja agentes de IA autónomos (Hermes y OpenClaw) para mí y para otras personas, cada uno en su propia VM o contenedor. Los agentes de terceros están aislados de mi red.</p>
                     </div>
                     <dl class="spec">
                         <div>
@@ -186,6 +186,10 @@
                         <div>
                             <dt>agentes IA</dt>
                             <dd>Hermes · OpenClaw</dd>
+                        </div>
+                        <div>
+                            <dt>aislamiento</dt>
+                            <dd>terceros fuera de mi LAN</dd>
                         </div>
                         <div>
                             <dt>contenedores</dt>
@@ -425,7 +429,6 @@
 
     <script src="js/main.js"></script>
     <script src="js/topology.js"></script>
-    <script src="js/cutrepodcast.js" defer></script>
 
     <!-- Service Worker para PWA -->
     <script>
