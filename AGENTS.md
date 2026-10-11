@@ -33,6 +33,7 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - CV nuevo publicado: `Rogert-Guevara-CV.pdf` (ES, enlazado desde `/`) y `Rogert-Guevara-CV-EN.pdf` (EN, enlazado desde `/en/`), generados desde `cv/`.
 - Publicadas la página `/cutrepodcast/` (ES/EN, todos los episodios) y la tarjeta "Rogert's Homelab Live" (→ `/lofi/`). SW en `portfolio-cache-v8`.
 - Proxy de Cloudflare quitado (2026-10-11) porque los bloqueos de LaLiga cortan las IPs compartidas de Cloudflare en las operadoras españolas durante los partidos. `cutrepodcast.rjgu.es` (R2) sigue con proxy y sigue afectado. Marcha atrás: volver a poner los 9 registros (4 A, 4 AAAA de `rjgu.es` y el CNAME `www`) en «Proxied».
+- `cutrepodcast.rjgu.es/` (raíz del bucket R2, que no tiene index) redirige con 302 a `https://rjgu.es/cutrepodcast/` mediante una Redirect Rule de la zona `rjgu.es` en Cloudflare (ruleset `http_request_dynamic_redirect`, regla `b03a9af2…`). Solo afecta a la ruta `/`.
 - Certificado de GitHub Pages renovado el 2026-10-11 (Let's Encrypt, `rjgu.es` + `www`, caduca 2027-01-09; GitHub lo renueva solo) y `https_enforced` activo. Si vuelve a quedarse en `bad_authz`: quitar el dominio (`gh api -X PUT repos/rogertgu/rjgu.es/pages -F cname=null`), esperar a que `https_certificate` sea `null` y volver a ponerlo (`-f cname=rjgu.es`); la web da 404 mientras tanto (unos 3 min).
 
 ## Próximos pasos
@@ -60,3 +61,4 @@ python3 -m http.server 8765 --bind 127.0.0.1   # http://127.0.0.1:8765/
 - 2026-10-11 — Claude Code — Tarjeta "Rogert's Homelab Live" (enlace a `/lofi/`, ES/EN) a petición de la sesión de homelab-live.
 - 2026-10-11 — Claude Code — Publicadas la página del Cutrepodcast y la tarjeta de Homelab Live; producción verificada (200 en todas las rutas, SW v8, CORS del JSON OK, 23 episodios).
 - 2026-10-11 — Claude Code — Quitado el proxy de Cloudflare de `rjgu.es` y `www` (bloqueos de LaLiga); certificado de GitHub Pages reemitido (estaba en `bad_authz`; ~3 min de 404 al quitar y volver a poner el dominio). Verificado: 200 en todas las rutas, redirecciones `www`/http, certificado hasta 2027-01-09.
+- 2026-10-11 — Claude Code — Redirect Rule en Cloudflare: la raíz de `cutrepodcast.rjgu.es` (404 de R2) lleva a `https://rjgu.es/cutrepodcast/`.
