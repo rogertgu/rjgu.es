@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-build="6c9c775b9e91">
+<html lang="es" data-build="79d3429563d4">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -3402,12 +3402,12 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     const tapL = r.typing && h(F / 4 | 0, 1) > 0.5 ? 1 : 0, tapR = r.typing && h(F / 4 | 0, 2) > 0.5 ? 1 : 0;
     arm(f, 0, y0 + 2, 1, y0 + 9, kA + 2, ty - tapL, true);
     const kn = kA + 3;
-    f.R(-kn, yS - 4, 3, yS - 2, PANTS_SH);
-    f.R(-kn, yS - 1, -kn + 2, yb - 2, PANTS_SH);
-    shoe(f, -kn - 1, yb, true);
-    f.R(-kn - 1, yS - 3, 2, yS - 1, PANTS);
-    f.R(-kn - 1, yS, -kn + 1, yb - 2, PANTS);
-    shoe(f, -kn - 2, yb, false);
+    f.R(-3, yS - 4, kn, yS - 2, PANTS_SH);
+    f.R(kn - 2, yS - 1, kn, yb - 2, PANTS_SH);
+    shoe(f, kn - 1, yb, true);
+    f.R(-3, yS - 3, kn + 1, yS - 1, PANTS);
+    f.R(kn - 1, yS, kn + 1, yb - 2, PANTS);
+    shoe(f, kn, yb, false);
     torso(f, y0, yS - 4, 1);
     head(f.x(1), y0 - 12 + nod, -1, blinking() || r.sip > 0, r.phones);
     if (r.sip > 0) {

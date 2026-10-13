@@ -5,7 +5,7 @@
 //  · icons/manifest: cache first
 //  · anything else (status.json, the mp4, Open-Meteo and other origins): not touched
 // =====================================================================================
-const CACHE = 'homelab-live-6c9c775b9e91';
+const CACHE = 'homelab-live-79d3429563d4';
 const PAGE = 'index.html';   // homelab-live.html, or index.html in the public build
 const FILES = [PAGE, 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 
