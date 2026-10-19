@@ -409,10 +409,23 @@ section[id] {
 }
 
 /* Aparición suave al hacer scroll (solo con JS y sin reduced-motion) */
+/* Si main.js no llega a cargar, el contenido aparece igualmente a los 4 s */
 .js .reveal {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 0.6s ease, transform 0.6s ease;
+    animation: reveal-fallback 0s 4s forwards;
+}
+
+.js.reveal-ready .reveal {
+    animation: none;
+}
+
+@keyframes reveal-fallback {
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .js .reveal.is-visible {
@@ -1078,6 +1091,41 @@ section[id] {
     color: var(--text);
 }
 
+/* ===== 404 ===== */
+.not-found {
+    min-height: calc(100vh - 80px);
+    padding-bottom: 88px;
+}
+
+.not-found .container {
+    position: relative;
+    z-index: 1;
+}
+
+.not-found-cmd {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 28px;
+    overflow-wrap: anywhere;
+}
+
+.not-found-cmd .prompt {
+    color: var(--accent);
+}
+
+.not-found-path {
+    color: var(--text);
+}
+
+.not-found-err {
+    color: var(--faint);
+}
+
+.not-found .hero-tagline + .hero-tagline {
+    margin-top: -20px;
+}
+
 .podcast-hero {
     padding-bottom: 24px;
 }
@@ -1391,5 +1439,50 @@ section[id] {
     .js .reveal {
         opacity: 1;
         transform: none;
+    }
+}
+
+/* ===== IMPRESIÓN ===== */
+@media print {
+    :root,
+    [data-theme] {
+        --bg: #ffffff;
+        --bg-alt: #ffffff;
+        --surface: #ffffff;
+        --surface-2: #f3f5f8;
+        --border: #dde2e8;
+        --border-strong: #c7ced6;
+        --text: #0f1419;
+        --muted: #4f5964;
+        --faint: #8a939d;
+        --accent: #0f766e;
+        --accent-rgb: 15, 118, 110;
+        --accent-ink: #ffffff;
+        --grid: transparent;
+        color-scheme: light;
+    }
+
+    .js .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+        animation: none;
+    }
+
+    .main-nav,
+    .skip-link,
+    .topology,
+    .hero::after {
+        display: none;
+    }
+
+    .hero {
+        padding-top: 0;
+    }
+
+    .project,
+    .job,
+    .episode {
+        break-inside: avoid;
     }
 }

@@ -1,28 +1,20 @@
 {
   "name": "rjgu.es",
-  "version": "1.0.0",
-  "description": "Portfolio personal de un experto en redes y sistemas",
-  "main": "index.html",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Web personal de Rogert Guevara (rjgu.es): sitio estático sin paso de build",
   "scripts": {
-    "start": "serve -s .",
+    "build": "node scripts/build-site.mjs",
     "validate": "node scripts/validate.mjs",
-    "generate-icons": "node generate-icons.js",
-    "deploy": "firebase deploy"
+    "lint:html": "html-validate _site/index.html _site/404.html _site/en _site/cutrepodcast",
+    "test": "node scripts/build-site.mjs && playwright test",
+    "check": "npm run validate && npm run lint:html && npm test",
+    "serve": "python3 -m http.server 8765 --bind 127.0.0.1 --directory _site"
   },
-  "keywords": [
-    "portfolio",
-    "redes",
-    "sistemas",
-    "arquitectura",
-    "seguridad",
-    "cloud",
-    "automatización"
-  ],
-  "author": "RJGU",
+  "author": "Rogert Guevara Uzcátegui",
   "license": "MIT",
   "devDependencies": {
-    "firebase-tools": "^12.0.0",
-    "serve": "^14.0.0",
-    "sharp": "^0.32.0"
+    "@playwright/test": "^1.64.1",
+    "html-validate": "^11.4.0"
   }
 }

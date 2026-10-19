@@ -1,53 +1,81 @@
-name: Deploy to GitHub Pages
+name: Validar y desplegar en GitHub Pages
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: "pages"
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
+  # Construye _site/ (solo lo público), lo valida y lo prueba en navegador.
+  # En push a main, además, lo sube como artefacto de Pages.
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Validate static site
+    - name: Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: npm
+
+    - name: Dependencias
+      run: npm ci
+
+    - name: Validación estática (construye _site/)
       run: npm run validate
 
+    - name: Validación HTML
+      run: npm run lint:html
+
+    - name: Navegador para las pruebas
+      run: npx playwright install --with-deps chromium
+
+    - name: Pruebas en navegador
+      run: npm test
+
+    - name: Informe de las pruebas
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7
+
+    - name: Configurar Pages
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      uses: actions/configure-pages@v5
+
+    - name: Subir _site/ como artefacto de Pages
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: _site
+
   deploy:
-    if: github.event_name == 'push'
-    needs: validate
-    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
-      contents: read
       pages: write
       id-token: write
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
-
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: '.'
-
-    - name: Deploy to GitHub Pages
+    - name: Desplegar en GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4

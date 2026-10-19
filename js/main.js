@@ -90,6 +90,8 @@
     document.querySelectorAll('main section[id]').forEach(section => sectionObserver.observe(section));
 
     // ----- Aparición al hacer scroll -----
+    // reveal-ready desactiva el respaldo CSS que muestra el contenido si este script no carga
+    root.classList.add('reveal-ready');
     const revealItems = document.querySelectorAll('.reveal');
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         revealItems.forEach(item => item.classList.add('is-visible'));
