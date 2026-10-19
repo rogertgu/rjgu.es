@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-build="5185bf48a83a">
+<html lang="es" data-build="64ab5cb0d317">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -38,6 +38,7 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
         border: 2px solid #c2c3c7; max-height: 60vh; overflow-y: auto; }
 #list button { display: block; width: 100%; text-align: left; border-color: transparent; white-space: nowrap; }
 #list button.cur { color: var(--tc); border-color: var(--tc); }
+#list button:disabled { opacity: 0.35; cursor: default; }
 /* settings panel (ui/settings-panel.js): same look as the player, opens above it */
 #settings { position: absolute; left: 0; bottom: calc(100% + 6px); width: max-content; max-width: calc(100vw - 28px); max-height: 72vh; overflow-y: auto;
             box-sizing: border-box; padding: 8px 10px; background: rgba(10,10,24,.95); border: 2px solid #c2c3c7; }
@@ -268,10 +269,12 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     // keep the screen on while the page is visible
     nightMode: true,
     // the radio plays softer and slower from 23 h to 7 h (audio role)
+    loopMin: 10,
+    // studio tracks (audio/studio.js): minutes each one lasts by looping its body; 0 = one pass, -1 = endless
     favorites: []
     // kept endless-radio tracks [{ seed, style, mood, name }], newest first (audio/radio.js, ★ / G)
   };
-  var URL_KEYS = { speed: "speed", realtime: "realtime", ambient: "ambient", weather: "liveWeather", homelab: "liveHomelab", fit: "fit", wakelock: "wakeLock", night: "nightMode" };
+  var URL_KEYS = { speed: "speed", realtime: "realtime", ambient: "ambient", weather: "liveWeather", homelab: "liveHomelab", fit: "fit", wakelock: "wakeLock", night: "nightMode", loop: "loopMin" };
   var parse = (def, v) => typeof def === "number" ? parseFloat(v) : typeof def === "boolean" ? v === "1" || v === "true" : v;
   var valid = (k, v) => k in DEFAULTS && typeof v === typeof DEFAULTS[k] && !(typeof v === "number" && !isFinite(v));
   var settings = { ...DEFAULTS };
@@ -1898,8 +1901,120 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     return finishTrack(tr2, 1e3 + seed2 + 1e5 * STYLES.indexOf(style));
   }
 
+  // src/audio/studio-data.js
+  var STUDIO = [
+    { "id": "cafe-en-el-rack", "name": "PRIMER CAFE", "style": "lofi", "file": "music/cafe-en-el-rack.mp3", "bpm": 77.985, "dur": 138.24, "loopStart": 14.639, "loopEnd": 100.812, "bars": 28, "xf": 3.08, "gain": -4.1, "lufs": -13, "peak": 0, "match": 0.855 },
+    { "id": "cafe-y-uptime", "name": "CAFE Y UPTIME", "style": "lofi-trompeta", "file": "music/cafe-y-uptime.mp3", "bpm": 83.147, "dur": 176.85, "loopStart": 34.733, "loopEnd": 114.988, "bars": 28, "xf": 2.89, "gain": -4.7, "lufs": -12.4, "peak": 0.1, "match": 0.807 },
+    { "id": "siesta-de-agosto", "name": "SIESTA DE AGOSTO", "style": "lofi-trompeta", "file": "music/siesta-de-agosto.mp3", "bpm": 76, "dur": 177.92, "loopStart": 18.193, "loopEnd": 106.617, "bars": 28, "xf": 3.16, "gain": -4.8, "lufs": -12.3, "peak": 0.1, "match": 0.881 },
+    { "id": "gato-en-el-teclado", "name": "GATO EN EL TECLADO", "style": "lofi-trompeta", "file": "music/gato-en-el-teclado.mp3", "bpm": 76, "dur": 176.88, "loopStart": 15.046, "loopEnd": 103.47, "bars": 28, "xf": 3.16, "gain": -4.3, "lufs": -12.8, "peak": 0.3, "match": 0.934 },
+    { "id": "pinar-de-son-baulo", "name": "PINAR DE SON BAULO", "style": "lofi-trompeta", "file": "music/pinar-de-son-baulo.mp3", "bpm": 81.99, "dur": 176.8, "loopStart": 13.948, "loopEnd": 131.024, "bars": 40, "xf": 2.93, "gain": -4.6, "lufs": -12.5, "peak": -0.1, "match": 0.905 },
+    { "id": "muelle-de-alcudia", "name": "MUELLE DE ALCUDIA", "style": "lofi-trompeta", "file": "music/muelle-de-alcudia.mp3", "bpm": 72.999, "dur": 180.19, "loopStart": 45.246, "loopEnd": 150.453, "bars": 32, "xf": 3.29, "gain": -4.3, "lufs": -12.8, "peak": 0.3, "match": 0.895 },
+    { "id": "farolas-del-paseo", "name": "FAROLAS DEL PASEO", "style": "lofi-trompeta", "file": "music/farolas-del-paseo.mp3", "bpm": 72.999, "dur": 175.83, "loopStart": 32.084, "loopEnd": 150.441, "bars": 36, "xf": 3.29, "gain": -4.4, "lufs": -12.7, "peak": 0.1, "match": 0.933 },
+    { "id": "lluvia-en-el-nas", "name": "LLUVIA EN EL NAS", "style": "lofi-trompeta", "file": "music/lluvia-en-el-nas.mp3", "bpm": 68, "dur": 169.98, "loopStart": 15.94, "loopEnd": 114.767, "bars": 28, "xf": 3.53, "gain": -4.7, "lufs": -12.4, "peak": 0.1, "match": 0.9 },
+    { "id": "can-picafort-3am", "name": "3AM EN EL PUERTO", "style": "lofi", "file": "music/can-picafort-3am.mp3", "bpm": 72.502, "dur": 163.03, "loopStart": 33.152, "loopEnd": 99.773, "bars": 20, "xf": 3.31, "gain": -4.3, "lufs": -12.8, "peak": -0, "match": 0.958 },
+    { "id": "terminal-a-las-dos", "name": "TERMINAL A LAS 2", "style": "lofi-trompeta", "file": "music/terminal-a-las-dos.mp3", "bpm": 71.995, "dur": 181.29, "loopStart": 29.178, "loopEnd": 135.84, "bars": 32, "xf": 3.33, "gain": -4.6, "lufs": -12.5, "peak": 0.3, "match": 0.644 },
+    { "id": "hora-en-orbita", "name": "HORA EN ORBITA", "style": "lofi-espacial", "file": "music/hora-en-orbita.mp3", "bpm": 72, "dur": 176.22, "loopStart": 34.176, "loopEnd": 154.179, "bars": 36, "xf": 3.33, "gain": -5.2, "lufs": -11.9, "peak": 0.1, "match": 0.898 },
+    { "id": "reloj-de-estrellas", "name": "RELOJ DE ESTRELLAS", "style": "lofi-espacial", "file": "music/reloj-de-estrellas.mp3", "bpm": 68, "dur": 175.49, "loopStart": 30.015, "loopEnd": 142.959, "bars": 32, "xf": 3.53, "gain": -4.9, "lufs": -12.2, "peak": 0.1, "match": 0.774 },
+    { "id": "marea-estelar", "name": "MAREA ESTELAR", "style": "lofi-espacial", "file": "music/marea-estelar.mp3", "bpm": 75.001, "dur": 177.14, "loopStart": 32.814, "loopEnd": 148.014, "bars": 36, "xf": 3.2, "gain": -4.2, "lufs": -12.9, "peak": 0.1, "match": 0.953 },
+    { "id": "log-de-madrugada", "name": "LOG DE MADRUGADA", "style": "lofi-trompeta", "file": "music/log-de-madrugada.mp3", "bpm": 65.994, "dur": 177.63, "loopStart": 17.28, "loopEnd": 133.645, "bars": 32, "xf": 3.64, "gain": -4.5, "lufs": -12.6, "peak": -0, "match": 0.919 },
+    { "id": "backup-nocturno", "name": "BACKUP NOCTURNO", "style": "lofi-trompeta", "file": "music/backup-nocturno.mp3", "bpm": 64, "dur": 173.51, "loopStart": 25.324, "loopEnd": 145.325, "bars": 32, "xf": 3.75, "gain": -4.1, "lufs": -13, "peak": 0.1, "match": 0.82 }
+  ];
+
+  // src/audio/studio.js
+  var STUDIO_OK = /^https?:$/.test(location.protocol) && Q.get("studio") !== "0";
+  var cache = /* @__PURE__ */ new Map();
+  function loadStudio(ctx2, file) {
+    if (!cache.has(file)) {
+      const p = fetch(file).then((r) => {
+        if (!r.ok) throw new Error(file + ": HTTP " + r.status);
+        return r.arrayBuffer();
+      }).then((b) => ctx2.decodeAudioData(b));
+      p.catch(() => cache.delete(file));
+      cache.set(file, p);
+    }
+    return cache.get(file);
+  }
+  function keepStudio(files) {
+    for (const f of [...cache.keys()]) if (!files.includes(f)) cache.delete(f);
+  }
+  var N = 64;
+  var FIN = new Float32Array(N);
+  var FOUT = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    const u = i / (N - 1);
+    FIN[i] = Math.sin(u * Math.PI / 2);
+    FOUT[i] = Math.cos(u * Math.PI / 2);
+  }
+  function playStudio(ctx2, tr2, dest, when, target) {
+    const s = tr2.studio, L2 = s.loopEnd - s.loopStart, hx = s.xf / 2, segs = [];
+    const h2 = { end: Infinity, t0: 0, buf: null, stopped: false, joins: 0 };
+    function seg(t, offset, fadeIn) {
+      const src2 = ctx2.createBufferSource(), g3 = ctx2.createGain();
+      src2.buffer = h2.buf;
+      src2.connect(g3);
+      g3.connect(dest);
+      if (fadeIn) {
+        g3.gain.setValueAtTime(0, t);
+        g3.gain.setValueCurveAtTime(FIN, t, s.xf);
+      }
+      src2.start(t, offset);
+      const sg2 = { src: src2, g: g3 };
+      segs.push(sg2);
+      src2.onended = () => {
+        g3.disconnect();
+        src2.disconnect();
+        const i = segs.indexOf(sg2);
+        if (i >= 0) segs.splice(i, 1);
+      };
+      return sg2;
+    }
+    let join = 0, last3 = null, final = false;
+    h2.ready = loadStudio(ctx2, s.file).then((buf) => {
+      if (h2.stopped) return;
+      h2.buf = buf;
+      const dur = buf.duration;
+      h2.t0 = Math.max(when, ctx2.currentTime + 0.05);
+      join = h2.t0 + s.loopEnd;
+      last3 = seg(h2.t0, 0, false);
+      if (target() <= 0 || dur - s.loopStart < s.xf) {
+        final = true;
+        h2.end = h2.t0 + dur;
+      }
+    });
+    h2.tick = (now2) => {
+      if (!h2.buf || final || h2.stopped || now2 < join - 6) return;
+      const dur = h2.buf.duration, tgt = target(), outro = dur - s.loopEnd;
+      const endIfStop = join + outro - h2.t0, endIfLoop = endIfStop + L2;
+      if (tgt === Infinity || Math.abs(endIfLoop - tgt) < Math.abs(endIfStop - tgt)) {
+        last3.g.gain.setValueCurveAtTime(FOUT, join - hx, s.xf);
+        last3.src.stop(join + hx + 0.05);
+        last3 = seg(join - hx, s.loopStart - hx, true);
+        join += L2;
+        h2.joins++;
+      } else {
+        final = true;
+        h2.end = join + outro;
+      }
+    };
+    h2.stop = (t) => {
+      h2.stopped = true;
+      final = true;
+      h2.end = Math.min(h2.end, t);
+      for (const { src: src2, g: g3 } of segs) {
+        g3.gain.cancelScheduledValues(t);
+        g3.gain.setTargetAtTime(0, t, 0.25);
+        try {
+          src2.stop(t + 1.5);
+        } catch (e) {
+        }
+      }
+    };
+    return h2;
+  }
+  var loopSeconds = (min) => min < 0 ? Infinity : min * 60;
+
   // src/audio/tracks.js
-  var TRACKS = [
+  var PROC = [
     {
       name: "CAFE EN EL RACK",
       bpm: 76,
@@ -2013,7 +2128,11 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
       scale: [72, 75, 77, 80, 82, 84]
     }
   ];
-  TRACKS.forEach(finishTrack);
+  PROC.forEach(finishTrack);
+  var PALETTE = [ORANGE, PEACH, YELLOW, GREEN, CYAN, BLUE, LAV, PINK];
+  var STUDIO_TRACKS = STUDIO.map((s, i) => ({ name: s.name, bpm: s.bpm, beat: 60 / s.bpm, bar: 240 / s.bpm, col: PALETTE[i % PALETTE.length], studio: s }));
+  var NSTUDIO = STUDIO_TRACKS.length;
+  var TRACKS = [...STUDIO_TRACKS, ...PROC];
   var INF = TRACKS.length;
   TRACKS.push(Object.assign(genTrack(1), { name: "RADIO INFINITA" }));
 
@@ -2029,6 +2148,9 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   var AN = null;
   var SPEC = null;
   var bus3 = null;
+  var mlp = null;
+  var studioH = null;
+  var upNext = null;
   var nextBar = 0;
   var barIdx = 0;
   var pass = 0;
@@ -2067,6 +2189,8 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     infSeed = Math.max(1, parseInt(Q.get("inf"), 10) || 1);
   }
   if (!infSeed) infSeed = 1 + Math.floor(Math.random() * 99999);
+  var playable = (k) => !TRACKS[k].studio || STUDIO_OK && !TRACKS[k].failed;
+  if (!playable(cur)) cur = NSTUDIO;
   infinite = cur === INF;
   if (!infinite) lastFixed = cur;
   var save = () => {
@@ -2092,6 +2216,7 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   var TRIM = [2.5, 8.5, 8, 1.5, 3.5, 3.5, 7, 5.5];
   var STYLE_TRIM = { lofi: 4.5, jazzhop: 4.5, ambient: 3, chip: 11 };
   function trackGain(tr2) {
+    if (tr2.studio) return Math.pow(10, tr2.studio.gain / 20);
     const db = tr2.gen ? (STYLE_TRIM[tr2.style] ?? 0) + (tr2.style === "lofi" && tr2.drums === "none" ? 4 : 0) : TRIM[tr2.id] ?? 0;
     return Math.pow(10, db / 20);
   }
@@ -2099,7 +2224,7 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     const g3 = ctx2.createGain(), lp = ctx2.createBiquadFilter(), nodes = [g3, lp];
     g3.gain.value = trackGain(tr2);
     lp.type = "lowpass";
-    lp.frequency.value = tr2.cut;
+    lp.frequency.value = tr2.cut ?? 2e4;
     lp.Q.value = 0.4;
     g3.connect(lp);
     lp.connect(dest);
@@ -2130,40 +2255,69 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     return tod + wet;
   }
   function playTrack(k, auto = false, seed2, opts) {
-    cur = (k + TRACKS.length) % TRACKS.length;
+    k = (k + TRACKS.length) % TRACKS.length;
+    if (!playable(k)) {
+      for (let i = 1; i < TRACKS.length; i++) if (playable((k + i) % TRACKS.length)) {
+        k = (k + i) % TRACKS.length;
+        break;
+      }
+    }
+    cur = k;
     infinite = cur === INF;
+    upNext = null;
     if (infinite) {
       infSeed = Math.max(1, seed2 ?? infSeed + 1);
       const o = opts || { mood: moodNow() };
       Object.assign(TRACKS[INF], genTrack(infSeed, o));
-      const tr2 = TRACKS[INF], top = hist[hist.length - 1];
-      if (!top || top.seed !== tr2.seed || top.style !== tr2.style) {
-        hist.push({ seed: tr2.seed, style: tr2.style, mood: tr2.mood });
+      const tr3 = TRACKS[INF], top = hist[hist.length - 1];
+      if (!top || top.seed !== tr3.seed || top.style !== tr3.style) {
+        hist.push({ seed: tr3.seed, style: tr3.style, mood: tr3.mood });
         if (hist.length > 30) hist.shift();
       }
     } else lastFixed = cur;
     changed();
     log((infinite ? STYLE_LABEL[TRACKS[cur].style] + ": " : "RADIO: ") + TRACKS[cur].name, TRACKS[cur].col);
     if (!AC3) return;
-    const old = bus3;
-    bus3 = newBus(TRACKS[cur]);
+    const old = bus3, tr2 = TRACKS[cur];
+    bus3 = newBus(tr2);
     barIdx = 0;
     vary = null;
     pass = infinite ? 0 : passes[cur] = (passes[cur] ?? -1) + 1;
-    if (old) old.drop(auto ? nextBar : AC3.currentTime, auto ? 0.3 : 0.25);
+    const at = auto ? nextBar : AC3.currentTime;
+    if (old) old.drop(at, auto ? 0.3 : 0.25);
+    if (studioH) {
+      studioH.stop(at);
+      studioH = null;
+    }
     if (!auto) {
       nextBar = AC3.currentTime + 0.15;
       if (old && AC3.state === "running") sfx("needle");
     }
+    mlp.frequency.setTargetAtTime(tr2.studio ? 16e3 : 5e3, at, 0.3);
+    if (tr2.studio) {
+      keepStudio([tr2.studio.file]);
+      const h2 = studioH = playStudio(AC3, tr2, bus3, nextBar, () => loopSeconds(settings.loopMin ?? 10));
+      h2.ready.catch(() => {
+        tr2.failed = true;
+        log("RADIO: NO SE PUEDE CARGAR " + tr2.name, LGREY);
+        if (studioH === h2) playTrack(pickNext());
+      });
+    }
     setMedia();
   }
   function pickNext() {
+    if (upNext !== null) return upNext;
     if (infinite) return INF;
-    if (!shuffle) return (cur + 1) % FIXED;
-    let k;
+    let k = cur;
+    if (!shuffle) {
+      do
+        k = (k + 1) % FIXED;
+      while (!playable(k) && k !== cur);
+      return k;
+    }
     do
       k = Math.floor(Math.random() * FIXED);
-    while (k === cur);
+    while ((k === cur || !playable(k)) && FIXED > 1);
     return k;
   }
   var nextTrack = () => {
@@ -2173,7 +2327,11 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   var prevTrack = () => {
     startAudio();
     if (!infinite) {
-      playTrack((cur - 1 + FIXED) % FIXED);
+      let k = cur;
+      do
+        k = (k - 1 + FIXED) % FIXED;
+      while (!playable(k) && k !== cur);
+      playTrack(k);
       return;
     }
     if (hist.length > 1) {
@@ -2231,9 +2389,27 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     lastSched = AC3.currentTime;
     night += (nightTarget() - night) * Math.min(1, dt / 6);
     applyNight();
+    if (TRACKS[cur].studio) {
+      if (!studioH) return;
+      studioH.tick(AC3.currentTime);
+      if (upNext === null && studioH.end - AC3.currentTime < 45) {
+        upNext = pickNext();
+        const nx = TRACKS[upNext];
+        if (nx.studio) {
+          keepStudio([TRACKS[cur].studio.file, nx.studio.file]);
+          loadStudio(AC3, nx.studio.file).catch(() => {
+          });
+        }
+      }
+      if (studioH.end > AC3.currentTime + ahead) return;
+      nextBar = studioH.end;
+      playTrack(pickNext(), true);
+      if (TRACKS[cur].studio) return;
+    }
     if (nextBar < AC3.currentTime) nextBar = AC3.currentTime + 0.05;
     while (nextBar < AC3.currentTime + ahead) {
       if (barIdx >= TRACKS[cur].bars) playTrack(pickNext(), true);
+      if (TRACKS[cur].studio) break;
       const tr2 = TRACKS[cur], stretch2 = 1 + 0.1 * night;
       if (!vary || barIdx % 16 === 0) vary = variation(tr2, pass, barIdx >> 4);
       scheduleBar(tr2, bus3, nextBar, barIdx++, { v: vary, night, stretch: stretch2 });
@@ -2253,7 +2429,7 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     started = true;
     if (AC3.state !== "running") AC3.resume().catch(() => {
     });
-    ({ master, fade, music, nightLP, AN } = buildChain(AC3, { vol: masterLevel(), out: routeOutput }));
+    ({ master, fade, music, nightLP, AN, lp: mlp } = buildChain(AC3, { vol: masterLevel(), out: routeOutput }));
     SPEC = new Uint8Array(AN.frequencyBinCount);
     startAmbience(AC3, master);
     setManualRain(rainOn);
@@ -2307,7 +2483,7 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
       vg.connect(music2);
       vs.start();
     }
-    return { master: master2, fade: fade2, music: music2, nightLP: nightLP2, AN: AN2, comp, lim };
+    return { master: master2, fade: fade2, music: music2, nightLP: nightLP2, AN: AN2, comp, lim, lp };
   }
   function unlockAudio() {
     if (!AC3) {
@@ -2347,7 +2523,7 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   }
   function setMedia() {
     if (!("mediaSession" in navigator) || !window.MediaMetadata) return;
-    navigator.mediaSession.metadata = new MediaMetadata({ title: TRACKS[cur].name, artist: "Rogert's Homelab FM", album: infinite ? "Radio infinita" : "Lofi procedural" });
+    navigator.mediaSession.metadata = new MediaMetadata({ title: TRACKS[cur].name, artist: "Rogert's Homelab FM", album: infinite ? "Radio infinita" : TRACKS[cur].studio ? "Lofi de estudio" : "Lofi procedural" });
     navigator.mediaSession.playbackState = playing ? "playing" : "paused";
   }
   function togglePlay() {
@@ -7374,6 +7550,8 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
     status(() => ({ on: ["ACTIVA", "live"], unsupported: ["NO DISPONIBLE", "off"] })[wakeState()] || [""])
   );
   row("MODO NOCHE DE LA RADIO", toggle("nightMode", "De 23 h a 7 h la radio suena m\xE1s suave y lenta"), mk2("span", "st", "23-7 H M\xC1S SUAVE"));
+  var LOOPS = [[0, "1 PASADA", "Cada tema suena una vez (unos 3 min)"], [10, "10 MIN", ""], [20, "20 MIN", ""], [30, "30 MIN", ""], [-1, "SIN FIN", "El tema se repite hasta que cambies"]];
+  row("DURACI\xD3N DE LOS TEMAS", ...LOOPS.map(([v, t, title]) => button(t, title || "Cada tema de estudio dura unos " + v + " min (en bucle)", () => setSetting("loopMin", v), () => settings.loopMin === v)));
   var infBtn = button("", "Temas generados sin fin (tambi\xE9n en la lista, L)", () => {
     setInfinite(!infinite);
     startAudio();
@@ -7443,8 +7621,12 @@ body:has(#settings:not([hidden])) #hint { opacity: 0 !important; }
   TRACKS.forEach((tr2, k) => {
     const li = document.createElement("li"), b = document.createElement("button");
     b.type = "button";
-    b.textContent = String(k + 1).padStart(2, "0") + "  " + (k === INF ? "RADIO INFINITA" : tr2.name + "  \xB7 " + tr2.bpm + " BPM");
+    b.textContent = String(k + 1).padStart(2, "0") + "  " + (k === INF ? "RADIO INFINITA" : tr2.name + "  \xB7 " + Math.round(tr2.bpm) + " BPM");
     b.style.setProperty("--tc", css(tr2.col));
+    if (tr2.studio && !STUDIO_OK) {
+      b.disabled = true;
+      b.title = "Solo con la p\xE1gina servida por http(s)";
+    }
     b.addEventListener("click", () => {
       startAudio();
       if (k !== cur) playTrack(k);
