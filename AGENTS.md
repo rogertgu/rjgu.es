@@ -33,10 +33,11 @@ scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 - En local `/cutrepodcast/` muestra el mensaje de error (con enlaces a iVoox/RSS): el CORS del bucket R2 solo admite el origen `rjgu.es`. Para probar con datos, descargar el JSON y servirlo con `page.route` de Playwright.
 
 ## Estado actual
-(Actualizado 2026-10-19)
+(Actualizado 2026-10-23)
 - Publicado en rjgu.es el rediseño B ("ingeniería/terminal"): portada con topología + línea de estado, Sobre mí, Proyectos (FROGLM, Cutrepodcast, Homelab con agentes Hermes/OpenClaw), Experiencia agrupada por empresa, Stack (sin porcentajes; `is-core` = especialidad principal) + certificaciones, Contacto.
 - CV nuevo publicado: `Rogert-Guevara-CV.pdf` (ES, enlazado desde `/`) y `Rogert-Guevara-CV-EN.pdf` (EN, enlazado desde `/en/`), generados desde `cv/`.
 - Publicadas la página `/cutrepodcast/` (ES/EN, todos los episodios) y la tarjeta "Rogert's Homelab Live" (→ `/lofi/`).
+- Desde 2026-10-23 solo se publica `_site/` (lista blanca) y el CI valida y prueba antes de desplegar (primera ejecución OK: run 39907862227, 35 pruebas). Verificado en producción: los ficheros internos dan 404, 404 propia, SW v9, podcast con 33 episodios.
 - Proxy de Cloudflare quitado (2026-10-11) porque los bloqueos de LaLiga cortan las IPs compartidas de Cloudflare en las operadoras españolas durante los partidos. `cutrepodcast.rjgu.es` (R2) sigue con proxy y sigue afectado. Marcha atrás: volver a poner los 9 registros (4 A, 4 AAAA de `rjgu.es` y el CNAME `www`) en «Proxied».
 - `cutrepodcast.rjgu.es/` (raíz del bucket R2, que no tiene index) redirige con 302 a `https://rjgu.es/cutrepodcast/` mediante una Redirect Rule de la zona `rjgu.es` en Cloudflare (ruleset `http_request_dynamic_redirect`, regla `b03a9af2…`). Solo afecta a la ruta `/`.
 - Certificado de GitHub Pages renovado el 2026-10-11 (Let's Encrypt, `rjgu.es` + `www`, caduca 2027-01-09; GitHub lo renueva solo) y `https_enforced` activo. Si vuelve a quedarse en `bad_authz`: quitar el dominio (`gh api -X PUT repos/rogertgu/rjgu.es/pages -F cname=null`), esperar a que `https_certificate` sea `null` y volver a ponerlo (`-f cname=rjgu.es`); la web da 404 mientras tanto (unos 3 min).
@@ -68,3 +69,4 @@ scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 - 2026-10-11 — Claude Code — Quitado el proxy de Cloudflare de `rjgu.es` y `www` (bloqueos de LaLiga); certificado de GitHub Pages reemitido (estaba en `bad_authz`; ~3 min de 404 al quitar y volver a poner el dominio). Verificado: 200 en todas las rutas, redirecciones `www`/http, certificado hasta 2027-01-09.
 - 2026-10-11 — Claude Code — Redirect Rule en Cloudflare: la raíz de `cutrepodcast.rjgu.es` (404 de R2) lleva a `https://rjgu.es/cutrepodcast/`.
 - 2026-10-19 — Claude Code — Revisión: el despliegue publicaba todo el repo (AGENTS.md, README, scripts…). Ahora solo `_site/` (lista blanca). Tests nuevos: validación sobre `_site/`, `html-validate` y Playwright (35 pruebas, escritorio + móvil) en CI. 404 propia, reglas de impresión y respaldo si `main.js` no carga. Foto en WebP (77→16 KB), `froglm.svg` optimizado (56→21 KB), SW v9. Borrados firebase.json, generate-icons.js, DEPLOY.md e `img/projects/`. Quitado "vuelve tras un año en pausa" del podcast. Miniatura del lofi rehecha (atardecer de verano) y pasada a PNG (104→32 KB).
+- 2026-10-23 — Claude Code — Publicada la revisión y la miniatura nueva (rebasadas sobre el build de lofi 64ab5cb). CI verde a la primera; producción verificada.
