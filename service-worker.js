@@ -4,7 +4,7 @@
  */
 
 // Nombre y versión de la caché
-const CACHE_NAME = 'portfolio-cache-v9';
+const CACHE_NAME = 'portfolio-cache-v10';
 const APP_ROOT = new URL('./', self.location).pathname;
 const assetUrl = path => `${APP_ROOT}${path.replace(/^\/+/, '')}`;
 

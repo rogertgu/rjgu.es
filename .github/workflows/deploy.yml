@@ -6,6 +6,15 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+  # Rehace la web para publicar las páginas de los episodios nuevos del podcast
+  # (sale a las 07:00 de Madrid). El cron de GitHub puede llegar con horas de
+  # retraso, por eso hay dos pasadas. repository_dispatch (tipo podcast-published)
+  # queda listo para que el pipeline del podcast lo dispare al publicar.
+  schedule:
+    - cron: '30 6 * * 1-5'
+    - cron: '30 12 * * 1-5'
+  repository_dispatch:
+    types: [ podcast-published ]
 
 permissions:
   contents: read
@@ -15,8 +24,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Construye _site/ (solo lo público), lo valida y lo prueba en navegador.
-  # En push a main, además, lo sube como artefacto de Pages.
+  # Prueba en navegador un _site/ construido con el podcast de tests/fixtures y
+  # después construye y valida el _site/ real (episodios del bucket), que es el
+  # que se sube como artefacto de Pages en main.
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -34,16 +44,10 @@ jobs:
     - name: Dependencias
       run: npm ci
 
-    - name: Validación estática (construye _site/)
-      run: npm run validate
-
-    - name: Validación HTML
-      run: npm run lint:html
-
     - name: Navegador para las pruebas
       run: npx playwright install --with-deps chromium
 
-    - name: Pruebas en navegador
+    - name: Pruebas en navegador (podcast de prueba)
       run: npm test
 
     - name: Informe de las pruebas
@@ -53,6 +57,12 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 7
+
+    - name: Validación estática (construye el _site/ real)
+      run: npm run validate
+
+    - name: Validación HTML
+      run: npm run lint:html
 
     - name: Configurar Pages
       if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

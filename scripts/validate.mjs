@@ -4,6 +4,8 @@
 //   - cada página tiene <main> y un solo <h1>, y sus referencias locales existen;
 //   - el manifest y la lista de precache del service worker apuntan a ficheros publicados;
 //   - no se publica nada interno (Markdown, package.json, scripts, fuentes del CV…).
+// Las páginas de los episodios salen de episodes.json en el bucket (red), salvo con
+// PODCAST_FEED=tests/fixtures/episodes.json.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -46,13 +48,22 @@ for (const file of files.filter(file => file.endsWith('.js') && !file.startsWith
 }
 
 // ----- Páginas -----
-const pages = ['index.html', 'en/index.html', 'cutrepodcast/index.html', 'en/cutrepodcast/index.html', '404.html'];
+const episodePages = files.filter(file => /^cutrepodcast\/ep-\d+\/index\.html$/.test(file));
+report(episodePages.length > 0, 'cutrepodcast/: no se ha generado ninguna página de episodio');
+const pages = ['index.html', 'en/index.html', 'cutrepodcast/index.html', 'en/cutrepodcast/index.html', '404.html', ...episodePages];
 for (const file of pages) {
   report(existsSync(join(site, file)), `${file}: no existe`);
   if (!existsSync(join(site, file))) continue;
   const html = read(file);
   report(html.includes('<main'), `${file}: falta el elemento <main>`);
   report((html.match(/<h1\b/g) || []).length === 1, `${file}: debe contener exactamente un <h1>`);
+  for (const [, data] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    try {
+      JSON.parse(data);
+    } catch (error) {
+      errors.push(`${file}: JSON-LD inválido (${error.message})`);
+    }
+  }
 
   const pageDirectory = file.includes('/') ? file.slice(0, file.lastIndexOf('/')) : '';
   const references = [...html.matchAll(/(?:src|href)=["']([^"'#?]+)["']/g)]

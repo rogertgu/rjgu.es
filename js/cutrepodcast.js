@@ -4,6 +4,8 @@
  * episodios desde el bucket público (R2) y los pinta con su reproductor,
  * del más reciente al más antiguo. El CORS del bucket solo admite rjgu.es,
  * así que en local se queda en el mensaje de error con los enlaces a iVoox/RSS.
+ * Cada episodio enlaza a su página (/cutrepodcast/ep-N/) si se generó al construir
+ * la web: build-site.mjs deja los números en data-pages de la lista.
  */
 (function () {
     'use strict';
@@ -16,6 +18,8 @@
     const status = document.querySelector('.episodes-status');
     const errorBox = document.querySelector('.episodes-error');
     const fallbackCover = document.querySelector('.podcast-cover')?.src || '';
+    const pages = new Set((list.dataset.pages || '').split(',').filter(Boolean).map(Number));
+    const pagesBase = isEnglish ? '../../cutrepodcast/' : './';
 
     const t = isEnglish
         ? {
@@ -68,7 +72,15 @@
         meta.append(number, el('span', '', formatDate(episode.date)));
         if (episode.duration) meta.append(el('span', '', formatDuration(episode.duration)));
 
-        const title = el('h3', 'episode-title', episode.title || episode.full_title);
+        const title = el('h3', 'episode-title');
+        const titleText = episode.title || episode.full_title;
+        if (pages.has(episode.number)) {
+            const link = el('a', '', titleText);
+            link.href = `${pagesBase}ep-${episode.number}/`;
+            title.append(link);
+        } else {
+            title.textContent = titleText;
+        }
         body.append(meta, title);
 
         if (episode.description) {

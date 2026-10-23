@@ -11,6 +11,8 @@ const PAGES = [
   { path: '/en/', lang: 'en' },
   { path: '/cutrepodcast/', lang: 'es' },
   { path: '/en/cutrepodcast/', lang: 'en' },
+  { path: '/cutrepodcast/ep-3/', lang: 'es' },
+  { path: '/cutrepodcast/ep-2/', lang: 'es' },
   { path: '/404.html', lang: 'es' }
 ];
 
@@ -74,7 +76,7 @@ for (const { path, lang } of PAGES) {
 
 test('enlaces internos de las portadas responden 200', async ({ page, request }) => {
   const targets = new Set();
-  for (const path of ['/', '/en/', '/cutrepodcast/', '/en/cutrepodcast/']) {
+  for (const path of ['/', '/en/', '/cutrepodcast/', '/en/cutrepodcast/', '/cutrepodcast/ep-2/']) {
     await page.goto(path);
     const hrefs = await page.$$eval('a[href]', anchors => anchors.map(anchor => anchor.href));
     hrefs.filter(href => href.startsWith(new URL(page.url()).origin))
@@ -167,6 +169,72 @@ test('podcast: si el JSON falla, muestra iVoox y RSS', async ({ page }, testInfo
   await expect(page.locator('.episodes')).toBeHidden();
   await expect(page.locator('.episodes-status')).toBeHidden();
   testInfo.problems.length = 0; // el fallo es intencionado
+});
+
+test('episodio: página con audio, transcripción, fuentes y navegación', async ({ page }) => {
+  await page.goto('/cutrepodcast/ep-3/');
+  await expect(page.locator('h1')).toHaveText('Episodio de prueba tres');
+  await expect(page).toHaveTitle('Episodio de prueba tres · Cutrepodcast #3');
+  await expect(page.locator('.hero-kicker')).toHaveText('episodio 3 · 7 ene 2026 · 1:02:05');
+  await expect(page.locator('audio.episode-player')).toHaveAttribute('src', '/tests-audio/ep-003.mp3');
+  await expect(page.locator('audio.episode-player')).toHaveAttribute('preload', 'none');
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://rjgu.es/cutrepodcast/ep-3/');
+
+  // Párrafos separados por línea en blanco; los saltos sueltos se unen
+  const transcript = page.locator('.transcript p');
+  await expect(transcript).toHaveCount(3);
+  await expect(transcript.last()).toHaveText('Y con esto nos despedimos.');
+
+  // Solo fuentes http(s)
+  const sources = page.locator('.sources a');
+  await expect(sources).toHaveCount(2);
+  await expect(sources.first()).toHaveAttribute('href', 'https://www.example.com/noticias/2026/01/07/una-noticia-de-prueba/');
+  await expect(sources.first().locator('.source-host')).toHaveText('example.com');
+
+  const jsonLd = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+  expect(jsonLd).toMatchObject({ '@type': 'PodcastEpisode', episodeNumber: 3, datePublished: '2026-01-07', timeRequired: 'PT62M5S' });
+
+  // Sin episodio 4 (no tiene audio): solo "anterior"
+  await expect(page.locator('.pager-link')).toHaveCount(1);
+  await page.locator('.pager-prev').click();
+  await expect(page).toHaveURL(/\/cutrepodcast\/ep-2\/$/);
+});
+
+test('episodio: el contenido del JSON se pinta como texto, nunca como HTML', async ({ page }) => {
+  const dialogs = [];
+  page.on('dialog', dialog => {
+    dialogs.push(dialog.message());
+    dialog.dismiss();
+  });
+  await page.goto('/cutrepodcast/ep-3/');
+  await expect(page.locator('.transcript p').nth(1)).toContainText('<script>alert("xss")</script>');
+  await expect(page.locator('.tag').last()).toHaveText('#<b>html</b>');
+  await expect(page.locator('main script, main b')).toHaveCount(0);
+  expect(dialogs).toEqual([]);
+});
+
+test('episodio sin transcripción: noindex y fuera del sitemap', async ({ page, request }) => {
+  await page.goto('/cutrepodcast/ep-2/');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  await expect(page.locator('#transcripcion')).toHaveCount(0);
+  // Sin portada propia usa la del programa
+  await expect(page.locator('.podcast-cover')).toHaveAttribute('src', '../../img/cutrepodcast.jpg');
+
+  const sitemap = await (await request.get('/sitemap.xml')).text();
+  expect(sitemap).toContain('<loc>https://rjgu.es/cutrepodcast/ep-3/</loc>');
+  expect(sitemap).not.toContain('/cutrepodcast/ep-2/');
+  expect((await request.get('/cutrepodcast/ep-4/')).status()).toBe(404);
+});
+
+test('podcast: la lista enlaza cada episodio con su página (ES y EN)', async ({ page }) => {
+  await page.goto('/en/cutrepodcast/');
+  await page.locator('#ep-3 .episode-title a').click();
+  await expect(page).toHaveURL(/\/cutrepodcast\/ep-3\/$/);
+  await expect(page.locator('h1')).toHaveText('Episodio de prueba tres');
+  await page.locator('.nav-back').click();
+  await expect(page).toHaveURL(/\/cutrepodcast\/$/);
+  await expect(page.locator('#ep-1 .episode-title a')).toHaveAttribute('href', './ep-1/');
 });
 
 test('404: página propia con la ruta pedida', async ({ page }) => {

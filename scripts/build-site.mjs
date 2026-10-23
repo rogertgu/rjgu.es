@@ -1,9 +1,12 @@
 // Copia en _site/ solo lo que se publica en rjgu.es (lista blanca).
 // Lo demás del repo (AGENTS.md, README, scripts, fuentes del CV, tests…) no se despliega.
+// Además genera las páginas de los episodios del podcast (scripts/podcast-pages.mjs).
 //   node scripts/build-site.mjs [carpeta]   (por defecto _site)
+//   PODCAST_FEED=tests/fixtures/episodes.json node scripts/build-site.mjs   (sin red)
 import { cpSync, existsSync, rmSync, statSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildPodcastPages } from './podcast-pages.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const out = resolve(root, process.argv[2] || '_site');
@@ -46,4 +49,6 @@ for (const entry of PUBLIC) {
   });
 }
 
+const podcast = await buildPodcastPages(out);
+console.log(`✓ Podcast: ${podcast.pages} páginas de episodio (${podcast.indexable} indexables) desde ${podcast.feed}`);
 console.log(`✓ Sitio en ${out}`);

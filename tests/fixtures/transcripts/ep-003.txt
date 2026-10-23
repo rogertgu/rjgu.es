@@ -1,0 +1,6 @@
+Bienvenidos al episodio de prueba tres del Cutrepodcast.
+
+Primera noticia: una transcripción con <script>alert("xss")</script> que debe verse como texto y no ejecutarse.
+
+Y con esto
+nos despedimos.

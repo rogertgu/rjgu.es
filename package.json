@@ -2,13 +2,13 @@
   "name": "rjgu.es",
   "version": "2.0.0",
   "private": true,
-  "description": "Web personal de Rogert Guevara (rjgu.es): sitio estático sin paso de build",
+  "description": "Web personal de Rogert Guevara (rjgu.es): sitio estático; al construir se generan las páginas de los episodios del podcast",
   "scripts": {
     "build": "node scripts/build-site.mjs",
     "validate": "node scripts/validate.mjs",
     "lint:html": "html-validate _site/index.html _site/404.html _site/en _site/cutrepodcast",
-    "test": "node scripts/build-site.mjs && playwright test",
-    "check": "npm run validate && npm run lint:html && npm test",
+    "test": "PODCAST_FEED=tests/fixtures/episodes.json node scripts/build-site.mjs && playwright test",
+    "check": "npm test && npm run validate && npm run lint:html",
     "serve": "python3 -m http.server 8765 --bind 127.0.0.1 --directory _site"
   },
   "author": "Rogert Guevara Uzcátegui",
