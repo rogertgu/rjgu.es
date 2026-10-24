@@ -5,16 +5,15 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  # También lo lanza el pipeline del podcast (rogertgu/cutrepodcast) al publicar o editar
+  # un episodio, con un token que solo tiene Actions: write en este repo.
   workflow_dispatch:
-  # Rehace la web para publicar las páginas de los episodios nuevos del podcast
-  # (sale a las 07:00 de Madrid). El cron de GitHub puede llegar con horas de
-  # retraso, por eso hay dos pasadas. repository_dispatch (tipo podcast-published)
-  # queda listo para que el pipeline del podcast lo dispare al publicar.
+  # Respaldo: rehace la web para publicar las páginas de los episodios nuevos del
+  # podcast (sale a las 07:00 de Madrid). El cron de GitHub puede llegar con horas
+  # de retraso, por eso hay dos pasadas.
   schedule:
     - cron: '30 6 * * 1-5'
     - cron: '30 12 * * 1-5'
-  repository_dispatch:
-    types: [ podcast-published ]
 
 permissions:
   contents: read
