@@ -88,6 +88,13 @@ test('enlaces internos de las portadas responden 200', async ({ page, request })
   }
 });
 
+test('sin enlaces a iVoox mientras no se arregle allí el hosting', async ({ page }) => {
+  for (const path of ['/', '/en/', '/cutrepodcast/', '/en/cutrepodcast/', '/cutrepodcast/ep-3/']) {
+    await page.goto(path);
+    await expect(page.locator('a[href*="ivoox.com"]'), path).toHaveCount(0);
+  }
+});
+
 test('no se publican ficheros internos', async ({ request }) => {
   for (const path of ['/AGENTS.md', '/README.md', '/package.json', '/scripts/validate.mjs', '/cv/es.html', '/lofi/README.md', '/tests/site.spec.mjs']) {
     const response = await request.get(path);
@@ -159,13 +166,14 @@ test('podcast: enlace directo a un episodio', async ({ page }) => {
   await expect(page.locator('#ep-1')).toBeInViewport();
 });
 
-test('podcast: si el JSON falla, muestra iVoox y RSS', async ({ page }, testInfo) => {
+test('podcast: si el JSON falla, muestra el RSS', async ({ page }, testInfo) => {
   await page.unroute(FEED);
   await page.route(FEED, route => route.abort());
   await page.goto('/en/cutrepodcast/');
   const error = page.locator('.episodes-error');
   await expect(error).toBeVisible();
-  await expect(error.locator('a')).toHaveCount(2);
+  await expect(error.locator('a')).toHaveCount(1);
+  await expect(error.locator('a')).toHaveAttribute('href', 'https://cutrepodcast.rjgu.es/feed.xml');
   await expect(page.locator('.episodes')).toBeHidden();
   await expect(page.locator('.episodes-status')).toBeHidden();
   testInfo.problems.length = 0; // el fallo es intencionado

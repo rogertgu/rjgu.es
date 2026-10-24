@@ -10,7 +10,6 @@ import { basename, dirname, isAbsolute, join, resolve } from 'node:path';
 
 export const FEED_URL = 'https://cutrepodcast.rjgu.es/episodes.json';
 const SITE_URL = 'https://rjgu.es';
-const IVOOX = 'https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html';
 
 // Todos los atributos de la plantilla van entre comillas dobles, así que basta con estas cuatro
 const escapeHtml = value => String(value ?? '')
@@ -220,7 +219,7 @@ ${sources.map(source => {
             </div>
             <div class="btn-row">
                 <a href="../" class="btn">Todos los episodios</a>
-                <a href="${IVOOX}" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">iVoox</a>
+                <!-- iVoox: quitado el 2026-10-24 hasta que se arregle allí el cambio de hosting -->
                 <a href="https://cutrepodcast.rjgu.es/feed.xml" class="btn arrow arrow-ext" target="_blank" rel="noopener noreferrer">RSS</a>
             </div>
         </div>

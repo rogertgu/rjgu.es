@@ -32,7 +32,7 @@ scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 ```
 - Despliegue: GitHub Actions (`.github/workflows/deploy.yml`): en cada push y PR, Playwright (con `_site/` del fixture del podcast) y después validación + `html-validate` del `_site/` real; en push a `main` sube ese `_site/` a GitHub Pages. También se rehace y despliega L-V a las 06:30 y 12:30 UTC (cron, para publicar las páginas de los episodios nuevos; el cron de GitHub puede llegar con horas de retraso) y con `repository_dispatch` tipo `podcast-published`. Si fallan las pruebas no se despliega (y los builds de `lofi/` que sube homelab-live también pasan por aquí). `CNAME` = `rjgu.es`. DNS en Cloudflare **sin proxy** (nube gris) desde 2026-10-11: `rjgu.es` A/AAAA → IPs de GitHub Pages y `www` CNAME → `rogertgu.github.io`; HTTPS con el certificado de GitHub (Let's Encrypt).
 - **Hacer push a `main` publica la web en producción.**
-- En local `/cutrepodcast/` muestra el mensaje de error (con enlaces a iVoox/RSS): el CORS del bucket R2 solo admite el origen `rjgu.es`. Para probar con datos, descargar el JSON y servirlo con `page.route` de Playwright.
+- En local `/cutrepodcast/` muestra el mensaje de error (con el enlace al RSS): el CORS del bucket R2 solo admite el origen `rjgu.es`. Para probar con datos, descargar el JSON y servirlo con `page.route` de Playwright.
 
 ## Estado actual
 (Actualizado 2026-10-24)
@@ -55,6 +55,7 @@ scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 - Sitio estático sin framework ni compilación: `_site/` es una copia de los ficheros públicos (lista blanca) más las páginas de episodio que genera `scripts/podcast-pages.mjs`. Mantenerlo así salvo que se pida otra cosa.
 - Rutas relativas (`img/...`, `../js/...` en `/en/`) para que funcione tanto en local como en Pages.
 - Si cambian los ficheros que se cachean, actualizar la lista y subir `CACHE_NAME` en `service-worker.js` (ahora `portfolio-cache-v10`).
+- Sin enlaces a iVoox desde 2026-10-24 (portada, `/cutrepodcast/` ES/EN y páginas de episodio) hasta que Rogert confirme que allí está arreglado el cambio de hosting (ver `~/work/rjgu/cutrepodcast/AGENTS.md`). Hay un comentario `<!-- iVoox: … -->` donde iba cada enlace; URL del programa: `https://www.ivoox.com/podcast-cutrepodcast-noticias-tecnologia_sq_f12725526_1.html`. Al restaurarlos, quitar la prueba «sin enlaces a iVoox».
 - Las páginas de episodio se generan en el build, no se commitean (dependen del bucket, que cambia a diario o al retirar episodios desde el panel).
 - La foto de la web es `img/profile.webp` (480 px); `img/profile.jpg` (800 px) solo para `og:image` y JSON-LD.
 - Las capturas de Playwright (`.playwright-mcp/`) no se commitean.
@@ -76,3 +77,4 @@ scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 - 2026-10-19 — Claude Code — Revisión: el despliegue publicaba todo el repo (AGENTS.md, README, scripts…). Ahora solo `_site/` (lista blanca). Tests nuevos: validación sobre `_site/`, `html-validate` y Playwright (35 pruebas, escritorio + móvil) en CI. 404 propia, reglas de impresión y respaldo si `main.js` no carga. Foto en WebP (77→16 KB), `froglm.svg` optimizado (56→21 KB), SW v9. Borrados firebase.json, generate-icons.js, DEPLOY.md e `img/projects/`. Quitado "vuelve tras un año en pausa" del podcast. Miniatura del lofi rehecha (atardecer de verano) y pasada a PNG (104→32 KB).
 - 2026-10-23 — Claude Code — Publicada la revisión y la miniatura nueva (rebasadas sobre el build de lofi 64ab5cb). CI verde a la primera; producción verificada.
 - 2026-10-24 — Claude Code — Páginas por episodio del Cutrepodcast generadas al construir (transcripción, fuentes, JSON-LD, sitemap, `noindex` sin transcripción), enlazadas desde la lista ES/EN; CI reordenado (pruebas con fixture, despliegue con datos reales) y reconstrucción programada L-V. SW v10. En la rama `episode-pages`.
+- 2026-10-24 — Claude Code — Quitados los enlaces a iVoox (portada, página del podcast y páginas de episodio) hasta que se arregle allí el hosting; el botón principal de `/cutrepodcast/` pasa a «Ver episodios».

@@ -3,7 +3,7 @@
  * Página /cutrepodcast/ (ES) y /en/cutrepodcast/ (EN): carga todos los
  * episodios desde el bucket público (R2) y los pinta con su reproductor,
  * del más reciente al más antiguo. El CORS del bucket solo admite rjgu.es,
- * así que en local se queda en el mensaje de error con los enlaces a iVoox/RSS.
+ * así que en local se queda en el mensaje de error con el enlace al RSS.
  * Cada episodio enlaza a su página (/cutrepodcast/ep-N/) si se generó al construir
  * la web: build-site.mjs deja los números en data-pages de la lista.
  */
