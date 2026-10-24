@@ -36,7 +36,7 @@ scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 
 ## Estado actual
 (Actualizado 2026-10-24)
-- Páginas por episodio del podcast (`/cutrepodcast/ep-N/`) hechas en la rama `episode-pages`, probadas en local (47 pruebas + validación + html-validate con los 34 episodios reales). Pendiente de que Rogert apruebe publicarlas (merge a `main`).
+- Publicadas (2026-10-24) las páginas por episodio del podcast (`/cutrepodcast/ep-N/`): CI verde (run 40079138749, 49 pruebas); verificado en producción: 34 páginas (11 en el sitemap, 1-23 en `noindex`), la lista ES/EN enlaza las 34, `ep-99` da 404, SW v10 y ningún enlace a iVoox.
 - Publicado en rjgu.es el rediseño B ("ingeniería/terminal"): portada con topología + línea de estado, Sobre mí, Proyectos (FROGLM, Cutrepodcast, Homelab con agentes Hermes/OpenClaw), Experiencia agrupada por empresa, Stack (sin porcentajes; `is-core` = especialidad principal) + certificaciones, Contacto.
 - CV nuevo publicado: `Rogert-Guevara-CV.pdf` (ES, enlazado desde `/`) y `Rogert-Guevara-CV-EN.pdf` (EN, enlazado desde `/en/`), generados desde `cv/`.
 - Publicadas la página `/cutrepodcast/` (ES/EN, todos los episodios) y la tarjeta "Rogert's Homelab Live" (→ `/lofi/`).
@@ -76,5 +76,6 @@ scripts/build-cv.sh /tmp/preview   # o en otra carpeta para previsualizar
 - 2026-10-11 — Claude Code — Redirect Rule en Cloudflare: la raíz de `cutrepodcast.rjgu.es` (404 de R2) lleva a `https://rjgu.es/cutrepodcast/`.
 - 2026-10-19 — Claude Code — Revisión: el despliegue publicaba todo el repo (AGENTS.md, README, scripts…). Ahora solo `_site/` (lista blanca). Tests nuevos: validación sobre `_site/`, `html-validate` y Playwright (35 pruebas, escritorio + móvil) en CI. 404 propia, reglas de impresión y respaldo si `main.js` no carga. Foto en WebP (77→16 KB), `froglm.svg` optimizado (56→21 KB), SW v9. Borrados firebase.json, generate-icons.js, DEPLOY.md e `img/projects/`. Quitado "vuelve tras un año en pausa" del podcast. Miniatura del lofi rehecha (atardecer de verano) y pasada a PNG (104→32 KB).
 - 2026-10-23 — Claude Code — Publicada la revisión y la miniatura nueva (rebasadas sobre el build de lofi 64ab5cb). CI verde a la primera; producción verificada.
-- 2026-10-24 — Claude Code — Páginas por episodio del Cutrepodcast generadas al construir (transcripción, fuentes, JSON-LD, sitemap, `noindex` sin transcripción), enlazadas desde la lista ES/EN; CI reordenado (pruebas con fixture, despliegue con datos reales) y reconstrucción programada L-V. SW v10. En la rama `episode-pages`.
+- 2026-10-24 — Claude Code — Páginas por episodio del Cutrepodcast generadas al construir (transcripción, fuentes, JSON-LD, sitemap, `noindex` sin transcripción), enlazadas desde la lista ES/EN; CI reordenado (pruebas con fixture, despliegue con datos reales) y reconstrucción programada L-V. SW v10.
 - 2026-10-24 — Claude Code — Quitados los enlaces a iVoox (portada, página del podcast y páginas de episodio) hasta que se arregle allí el hosting; el botón principal de `/cutrepodcast/` pasa a «Ver episodios».
+- 2026-10-24 — Claude Code — Publicadas las páginas de episodio y la retirada de iVoox (fast-forward de `episode-pages` a `main`); producción verificada.
